@@ -1,0 +1,301 @@
+---
+name: design-system
+description: "Comprehensive UI/UX design principles for building production-grade applications. Use this skill whenever building, styling, or reviewing any user interface — including Next.js pages, React components, dashboards, forms, landing pages, settings screens, onboarding flows, or any visual output the user will see. Also trigger when the user mentions design, styling, layout, typography, colors, spacing, UX, user flows, or visual polish. Even if the user doesn't explicitly ask for 'good design,' always consult this skill when creating anything visual. This skill prevents generic AI aesthetics and ensures every interface has intentional hierarchy, consistent systems, and real design thinking."
+---
+
+# Design System
+
+This skill teaches you to design like a senior product designer, not like a language model that happens to output CSS. Every interface you build should look like a human designer spent real time on it.
+
+The core problem: without this skill, you produce interfaces that are technically functional but visually generic — safe color choices, uniform spacing, flat hierarchy, no personality. Users describe this as "AI slop." This skill fixes that.
+
+## The Design-First Rule
+
+Before writing any code for a visual interface, spend real thinking time on design decisions. Not "pick a color palette" — actual design thinking:
+
+1. **Who is this for and what do they need?** A clinician triaging patients needs density and scanability. A consumer onboarding flow needs breathing room and progressive disclosure. A dashboard for executives needs clear KPIs with drill-down, not a wall of charts.
+
+2. **What is the single most important action on each screen?** Every screen has one. Find it. Make it unmissable. Everything else is secondary.
+
+3. **What is the emotional register?** Clinical trust looks different from playful engagement looks different from premium luxury. Pick one and commit. Don't try to be everything.
+
+4. **What are the user's actual steps?** Map the flow before designing the screen. Screens exist to move users through a sequence — if you don't know the sequence, you can't design the screen.
+
+## Typography
+
+Typography is the single highest-leverage design decision. Get this right and mediocre everything else still looks good. Get this wrong and nothing saves it.
+
+### The Type Scale
+
+Use a modular scale. Pick a base size and a ratio, then derive everything mathematically. This creates natural visual harmony that hand-picked sizes never achieve.
+
+**Recommended scale** (base 16px, ratio 1.25 — "major third"):
+- `xs`: 12.8px (0.8rem) — captions, metadata, timestamps
+- `sm`: 14px (0.875rem) — secondary text, table cells, form labels  
+- `base`: 16px (1rem) — body text, descriptions, input values
+- `lg`: 20px (1.25rem) — card titles, section introductions
+- `xl`: 25px (1.5625rem) — section headings
+- `2xl`: 31.25px (1.953rem) — page titles
+- `3xl`: 39px (2.441rem) — hero headings
+- `4xl`: 48.8px (3.052rem) — display text, landing pages only
+
+**Rules:**
+- Never use more than 4 sizes on a single screen. If you need more, your hierarchy is broken.
+- Body text below 14px is hostile to users. Don't do it.
+- Line height: 1.5 for body text, 1.2–1.3 for headings, 1.1 for display text. Tighter leading on large text, looser on small text.
+- Max line width: 65–75 characters for body text. Always constrain `max-width` on text blocks. Unbounded line length is the most common amateur mistake.
+- Letter-spacing: Slight positive tracking (+0.01–0.02em) on all-caps text and small labels. Slight negative tracking (-0.01–0.02em) on large display text.
+
+### Font Selection
+
+**For applications (dashboards, tools, SaaS):** Use a highly legible sans-serif with good tabular figures. Strong choices: **DM Sans**, **General Sans**, **Satoshi**, **Plus Jakarta Sans**, **Instrument Sans**, **Geist**. These are distinctive without being distracting. Never use Inter, Roboto, or Arial — they signal "I didn't actually choose a font."
+
+**For consumer/marketing:** You have more freedom. Pair a characterful display face with a clean body face. Example: **Fraunces** (headings) + **DM Sans** (body). Or **Playfair Display** + **Source Sans 3**. The display face carries the personality; the body face stays invisible.
+
+**For health/medical contexts specifically:** Favor humanist sans-serifs that feel warm but professional. **DM Sans**, **Source Sans 3**, **Nunito Sans** work well. Avoid geometric sans-serifs (Futura, Montserrat) — they feel cold in healthcare contexts. Avoid serif faces unless the brand is explicitly editorial.
+
+**Loading fonts:** Always use Google Fonts or Fontsource. Include at minimum: regular (400), medium (500), semibold (600), bold (700). Define font-family in CSS variables. Always set a good fallback stack.
+
+## Color
+
+### Building a Palette
+
+Every palette needs exactly these roles. Define them as CSS variables and use nothing else:
+
+```
+--color-bg:           /* page background */
+--color-bg-subtle:    /* cards, sections, sidebar backgrounds */
+--color-bg-muted:     /* hover states, secondary surfaces */
+--color-border:       /* default borders */
+--color-border-subtle:/* very light dividers */
+--color-text:         /* primary text — high contrast against bg */
+--color-text-secondary:/* descriptions, metadata — noticeably lighter */
+--color-text-muted:   /* placeholders, disabled — use sparingly */
+--color-primary:      /* primary action, links, active states */
+--color-primary-hover:/* darkened or saturated primary */
+--color-primary-subtle:/* light tint of primary for backgrounds */
+--color-success:      /* confirmations, positive states */
+--color-warning:      /* caution states */
+--color-danger:       /* errors, destructive actions */
+--color-accent:       /* one unexpected color for visual interest — use sparingly */
+```
+
+**Rules:**
+- The gap between `--color-text` and `--color-text-secondary` is crucial. It must be visible but not jarring. This is how you create hierarchy without size changes.
+- Primary color should appear in no more than ~10% of the visible screen. If everything is blue, nothing is blue.
+- Avoid pure black (#000) on pure white (#fff). Use near-black (like `#0f172a` or `#111827`) on white, or pure white on near-black. The slight warmth or coolness creates comfort.
+- Every color must pass WCAG AA contrast against its intended background. No exceptions. Use https://webaim.org/resources/contrastchecker/ mentally — body text needs 4.5:1, large text 3:1.
+- Don't use color as the *only* indicator of state. Always pair with an icon, label, or shape change.
+
+### Color Selection Strategies
+
+Instead of defaulting to blue (which every SaaS app uses), try:
+
+- **Warm neutrals** with a single strong accent — `stone` or `warm gray` backgrounds with `emerald` or `amber` accents
+- **Deep, muted tones** — colors that feel like they exist in the real world, not a screen: `slate-700`, `teal-800`, `rose-900`
+- **Monochromatic with one pop** — all grays and one vibrant color that draws the eye exactly where you want it
+
+## Spacing
+
+Inconsistent spacing is the #1 tell that an interface wasn't designed. It's also the easiest thing to fix.
+
+### The 4px Grid
+
+Every spacing value is a multiple of 4px. Period. No 5px, no 7px, no 13px.
+
+**Spacing scale:**
+- `4px` (0.25rem) — tight inner padding, icon-to-label gaps
+- `8px` (0.5rem) — compact inner padding, between related items
+- `12px` (0.75rem) — standard inner padding for small elements
+- `16px` (1rem) — default padding, gap between form fields
+- `24px` (1.5rem) — section inner padding, card padding
+- `32px` (2rem) — between sections within a card/panel
+- `48px` (3rem) — between major page sections
+- `64px` (4rem) — large section gaps, page-level breathing room
+- `96px` (6rem) — hero sections, major visual breaks
+
+### The Proximity Principle
+
+Related items must be closer together than unrelated items. This sounds obvious but Claude consistently fails at it. Example:
+
+- A form label should be **8px** above its input (tight — they're a unit)
+- The gap between one form field group and the next should be **24px** (clear separation)
+- The gap between the form and the submit button should be **32px** (distinct zone)
+
+If all three gaps are the same, the form has no visual structure. The user has to *read* to understand grouping instead of *seeing* it.
+
+### Padding Consistency
+
+- Cards: `24px` padding all sides. Not 16 on top and 24 on sides. Consistent.
+- Modals: `32px` padding.
+- Page content: `48px` or `64px` horizontal padding on desktop, `16px` or `24px` on mobile.
+- Buttons: `12px 24px` (vertical/horizontal) for standard, `8px 16px` for compact, `16px 32px` for hero CTAs.
+
+## Layout & Hierarchy
+
+### Visual Hierarchy Checklist
+
+On any screen, a user should be able to answer these questions within 2 seconds of looking:
+
+1. **Where am I?** (Page title, breadcrumb, or navigation state)
+2. **What's the main thing here?** (Primary content or action)
+3. **What can I do?** (Visible primary action button)
+
+If any of those take more than 2 seconds, the hierarchy is wrong.
+
+### Hierarchy Tools (in order of strength)
+
+1. **Size** — the strongest signal. Big things matter.
+2. **Weight** — bold vs. regular creates clear parent-child relationships.
+3. **Color** — primary color draws the eye. Muted color recedes.
+4. **Space** — more space around something gives it importance (the luxury principle).
+5. **Position** — top-left is first-read in LTR languages. Top of page matters most.
+6. **Contrast** — high contrast = primary. Low contrast = secondary.
+
+Use at least 2 of these for any hierarchy distinction. Size alone isn't enough; size + weight + color makes it unmissable.
+
+### Layout Patterns
+
+**Content pages:** Max width 768px for text-heavy content. Center it. Generous top padding.
+
+**Dashboards:** Sidebar (240–280px) + main content. Grid of cards. Primary metric cards at top, detail below. Use a 12-column grid. Cards should be 4-col or 6-col, rarely 3-col (too narrow for most content).
+
+**Forms:** Single column. Always. Multi-column forms reduce completion rates. Max width 480–560px. Labels above inputs, never beside them on forms with more than 3 fields.
+
+**Settings pages:** Vertical navigation or segmented tabs at top. Each section as its own card with a clear heading. Save button anchored to bottom or inline per-section.
+
+**Tables:** Align text left, numbers right. Column headers should be smaller/lighter than cell content (they're labels, not content). Generous row padding (12–16px). Subtle alternating row colors or light bottom borders, not both.
+
+## UX Principles
+
+### Progressive Disclosure
+
+Don't show everything at once. Start with what matters and let users drill down.
+
+- **Forms:** Break long forms into steps. Show progress. Each step should have 3–5 fields max.
+- **Settings:** Group into categories. Show summaries, expand for details.
+- **Data:** Show the headline metric. Click to see the breakdown. Click again for the raw data.
+- **Navigation:** Primary items visible. Secondary items in a "More" menu or secondary nav.
+
+### Loading & Empty States
+
+Every screen has three states: loading, empty, and populated. Design all three.
+
+- **Loading:** Use skeleton screens that match the populated layout shape. Never a centered spinner on a blank page. The skeleton tells users what to expect.
+- **Empty:** Never a blank page with "No data." Include an illustration or icon, a clear message explaining *why* it's empty, and a CTA to fix it ("Add your first...", "Import from...").
+- **Error:** Tell users what went wrong *and what to do about it*. "Something went wrong" is useless. "We couldn't save your changes. Check your connection and try again." is actionable.
+
+### Interaction Feedback
+
+Every user action should produce visible feedback within 100ms.
+
+- **Buttons:** Visible hover state (background change or subtle lift). Active/pressed state (slight darken). Loading state with spinner replacing or beside the label. Never disable without explanation.
+- **Inputs:** Clear focus ring (don't remove outlines). Validation as they type for format errors, on blur for required fields. Error messages below the field, not in an alert.
+- **Transitions:** Page transitions should be 200–300ms. Micro-interactions (hover, toggle) should be 100–150ms. Anything over 400ms feels sluggish.
+
+### Responsive Behavior
+
+Design for these breakpoints:
+- **Mobile:** 375px (design target), 320px (minimum supported)
+- **Tablet:** 768px
+- **Desktop:** 1024px (compact), 1280px (standard), 1440px+ (wide)
+
+**Rules:**
+- Touch targets: minimum 44x44px on mobile. Not smaller. Ever.
+- Don't just stack columns on mobile. Rethink the layout: what matters most on a small screen?
+- Sidebar navigation becomes bottom tab bar or hamburger on mobile. Choose bottom tabs for <5 items, hamburger for more.
+- Tables become cards on mobile. Don't try to squeeze a table into 375px.
+
+## Implementation Patterns
+
+### CSS Variable Setup
+
+Always start with a CSS variables block defining the full system. This is the first thing you write:
+
+```css
+:root {
+  /* Typography */
+  --font-display: 'Font Name', sans-serif;
+  --font-body: 'Font Name', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  
+  /* Font sizes */
+  --text-xs: 0.8rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.563rem;
+  --text-2xl: 1.953rem;
+  --text-3xl: 2.441rem;
+  
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+  
+  /* Colors — replace with actual palette */
+  --color-bg: #ffffff;
+  --color-bg-subtle: #f8fafc;
+  --color-bg-muted: #f1f5f9;
+  --color-border: #e2e8f0;
+  --color-border-subtle: #f1f5f9;
+  --color-text: #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-muted: #94a3b8;
+  --color-primary: #2563eb;
+  --color-primary-hover: #1d4ed8;
+  --color-primary-subtle: #eff6ff;
+  --color-success: #16a34a;
+  --color-warning: #d97706;
+  --color-danger: #dc2626;
+  
+  /* Borders */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.04);
+  
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 200ms ease;
+  --transition-slow: 300ms ease;
+}
+```
+
+### Tailwind Translation
+
+When using Tailwind (common in Next.js), map the system to Tailwind's `tailwind.config.js` `extend` block. But in artifact contexts where you're writing inline Tailwind classes, be intentional:
+
+- Don't scatter random `p-3`, `p-5`, `p-4` across elements. Pick a consistent padding for each element type and stick to it.
+- Use `gap-` on flex/grid containers instead of margins on children. It's more predictable.
+- Color consistency: decide once what `text-slate-600` vs `text-slate-500` vs `text-slate-400` mean in your hierarchy and use them consistently for the same roles throughout.
+
+### Component Patterns
+
+For reference on specific component design patterns (buttons, inputs, cards, navigation, modals, tables), see `references/components.md`.
+
+## Anti-Patterns to Avoid
+
+These are the specific things that make interfaces look AI-generated:
+
+1. **Equal spacing everywhere.** If every gap is `16px`, the page is a flat list. Use the proximity principle.
+2. **No text hierarchy.** If headings and body text are within 4px of each other in size, there's no hierarchy.
+3. **Gray everything.** Gray backgrounds, gray text, gray borders — it's safe but lifeless. Add one warm or cool color that runs through the whole interface.
+4. **Centered everything.** Not everything should be centered. Align form labels left. Align page content left in a max-width container. Reserve centering for hero sections and empty states.
+5. **Border on every element.** If every card, input, section, and container has a `1px solid #e5e7eb`, the page looks like a wireframe. Use background color differences *or* borders, rarely both.
+6. **Rounded everything.** If buttons are `rounded-full` and cards are `rounded-2xl` and inputs are `rounded-xl`, it looks toyish. Pick a consistent radius scale and use it deliberately.
+7. **Drop shadow on every surface.** One or two elevated elements (modals, sticky headers, dropdowns). Not every card.
+8. **Purple gradients on white.** This is the most overused AI design cliché. If you catch yourself reaching for a blue-to-purple gradient, stop.
+9. **Placeholder content everywhere.** Never use "Lorem ipsum." Use realistic content that matches the actual domain. If you're building a health app, use realistic health data.
+10. **Ignoring the fold.** The most important content and action must be visible without scrolling on a standard viewport (768px height).
