@@ -240,45 +240,101 @@ a {
   color: var(--grn);
 }
 
-/* ═══ HERO ═══ */
+/* ═══ HERO — Centered Typographic ═══ */
 .hero {
   min-height: 100vh;
   min-height: 100dvh;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
   align-items: center;
-  padding: 100px 48px 80px;
+  justify-content: center;
+  padding: 120px 36px 80px;
   position: relative;
   overflow: hidden;
-  gap: 40px;
+  text-align: center;
 }
 
-.hero::before {
-  content: '';
+/* Organic glow layers */
+.hero-glow {
   position: absolute;
-  top: -10%;
-  right: -5%;
-  width: 58%;
-  height: 120%;
-  background: var(--warm);
-  border-radius: 40% 0 0 40%;
-  z-index: 0;
+  pointer-events: none;
+  border-radius: 50%;
+  filter: blur(80px);
 }
 
-.hero-text {
+.hero-glow-1 {
+  width: 600px;
+  height: 600px;
+  top: -10%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: radial-gradient(circle, var(--grn-s), transparent 70%);
+  opacity: .45;
+  animation: drift 20s ease-in-out infinite;
+}
+
+.hero-glow-2 {
+  width: 400px;
+  height: 400px;
+  bottom: 5%;
+  left: 10%;
+  background: radial-gradient(circle, var(--terra-s), transparent 70%);
+  opacity: .35;
+  animation: drift 16s ease-in-out infinite;
+  animation-delay: -5s;
+}
+
+.hero-glow-3 {
+  width: 350px;
+  height: 350px;
+  top: 20%;
+  right: 5%;
+  background: radial-gradient(circle, var(--grn-s), transparent 70%);
+  opacity: .25;
+  animation: drift 18s ease-in-out infinite;
+  animation-delay: -10s;
+}
+
+/* Botanical wreath SVG */
+.hero-wreath {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(600px, 90vw);
+  height: min(600px, 90vw);
+  pointer-events: none;
+  z-index: 0;
+  animation: rise 1.4s cubic-bezier(.22, 1, .36, 1) .1s both;
+}
+
+/* Content */
+.hero-center {
   position: relative;
   z-index: 2;
-  max-width: 560px;
+  max-width: 680px;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: .68rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--grn);
+  margin-bottom: 32px;
+  animation: rise .9s cubic-bezier(.22, 1, .36, 1) .1s both;
 }
 
 .hero h1 {
   font-family: var(--serif);
-  font-size: clamp(2.8rem, 5.8vw, 4.6rem);
+  font-size: clamp(3rem, 6.5vw, 5.2rem);
   font-weight: 300;
-  line-height: 1.08;
+  line-height: 1.06;
   letter-spacing: -.03em;
-  margin-bottom: 24px;
-  animation: rise .9s cubic-bezier(.22, 1, .36, 1) .15s both;
+  margin-bottom: 28px;
+  animation: rise .9s cubic-bezier(.22, 1, .36, 1) .2s both;
 }
 
 .hero h1 em {
@@ -288,18 +344,23 @@ a {
 }
 
 .hero-p {
-  font-size: 1.05rem;
+  font-size: 1.08rem;
   line-height: 1.75;
   color: var(--ink2);
-  max-width: 420px;
-  margin-bottom: 36px;
-  animation: rise .9s cubic-bezier(.22, 1, .36, 1) .3s both;
+  max-width: 480px;
+  margin: 0 auto 40px;
+  animation: rise .9s cubic-bezier(.22, 1, .36, 1) .35s both;
 }
 
-.hero-btn {
-  animation: rise .9s cubic-bezier(.22, 1, .36, 1) .45s both;
+.hero-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  animation: rise .9s cubic-bezier(.22, 1, .36, 1) .5s both;
 }
 
+/* Buttons */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -312,6 +373,7 @@ a {
   border-radius: 100px;
   cursor: pointer;
   transition: all .35s cubic-bezier(.22, 1, .36, 1);
+  text-decoration: none;
 }
 
 .btn-g {
@@ -334,148 +396,30 @@ a {
   transform: translateX(3px);
 }
 
-/* Hero visual composition */
-.hero-visual {
-  position: relative;
-  z-index: 1;
-  height: 100%;
-  min-height: 500px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: rise 1.2s cubic-bezier(.22, 1, .36, 1) .3s both;
+.btn-o {
+  background: transparent;
+  color: var(--ink2);
+  border: 1.5px solid var(--deep);
 }
 
-.hero-frame {
-  width: 340px;
-  height: 440px;
-  border-radius: 180px 180px 28px 28px;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 24px 64px rgba(31, 30, 26, .08);
-  z-index: 2;
-}
-
-.hero-leaf {
-  position: absolute;
-  z-index: 1;
-  opacity: .12;
-  animation: leaf-sway 6s ease-in-out infinite;
-}
-
-.hero-leaf-1 {
-  top: 20px;
-  right: 10px;
-  transform-origin: bottom center;
-}
-
-.hero-leaf-2 {
-  bottom: 40px;
-  left: -20px;
-  transform-origin: top center;
-  animation-delay: -2s;
-}
-
-.hero-leaf-3 {
-  top: 60%;
-  right: -30px;
-  transform-origin: center left;
-  animation-delay: -4s;
-}
-
-.hero-blob {
-  position: absolute;
-  pointer-events: none;
-  z-index: 0;
-  animation: morph 14s ease-in-out infinite, drift 18s ease-in-out infinite;
-}
-
-.hero-blob-1 {
-  width: 280px;
-  height: 280px;
-  top: -40px;
-  right: -60px;
-  background: radial-gradient(circle at 40% 40%, var(--grn-s), transparent 70%);
-  opacity: .7;
-}
-
-.hero-blob-2 {
-  width: 200px;
-  height: 200px;
-  bottom: -20px;
-  left: 20px;
-  background: radial-gradient(circle at 60% 60%, var(--terra-s), transparent 70%);
-  opacity: .5;
-  animation-delay: -6s;
-}
-
-.hero-chip {
-  position: absolute;
-  z-index: 3;
-  background: var(--white);
-  border-radius: 14px;
-  padding: 14px 20px;
-  box-shadow: 0 8px 28px rgba(31, 30, 26, .06);
-  animation: drift 7s ease-in-out infinite;
-}
-
-.hero-chip-1 {
-  bottom: 60px;
-  left: -24px;
-  animation-delay: 0s;
-}
-
-.hero-chip-2 {
-  top: 40px;
-  right: -20px;
-  animation-delay: -3s;
-}
-
-.chip-label {
-  font-size: .62rem;
-  font-weight: 600;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: var(--ink4);
-  margin-bottom: 3px;
-}
-
-.chip-val {
-  font-family: var(--serif);
-  font-size: 1.15rem;
-  font-weight: 500;
-  color: var(--ink);
-}
-
-.chip-val.grn {
+.btn-o:hover {
+  border-color: var(--grn);
   color: var(--grn);
+  transform: translateY(-2px);
 }
 
-.hero-ring {
+/* Bottom fade */
+.hero-fade {
   position: absolute;
-  z-index: 0;
-  width: 480px;
-  height: 480px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border: 1px solid var(--deep);
-  border-radius: 50%;
-  opacity: .4;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: linear-gradient(to bottom, transparent, var(--parch));
+  z-index: 1;
 }
 
-.hero-ring-2 {
-  position: absolute;
-  z-index: 0;
-  width: 560px;
-  height: 560px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border: 1px dashed var(--deep);
-  border-radius: 50%;
-  opacity: .2;
-}
+
 
 /* ═══ SHARED ═══ */
 .sec {

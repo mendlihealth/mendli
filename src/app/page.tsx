@@ -7,7 +7,8 @@ import Image from "next/image";
    Mendli Health — Single-page site
    ═══════════════════════════════════════════════════════════════ */
 
-const BOOKING_URL = "https://mentalhealthmatch.com/profiles/jenna-toupin";
+const MAILTO =
+  "mailto:jenna@mendlihealth.com?subject=New%20Appointment&body=Hi%20Jenna%2C%0A%0AI%E2%80%99d%20love%20to%20book%20an%20appointment%20with%20you.%20Looking%20forward%20to%20getting%20started%20on%20my%20health%20journey.%0A%0AThank%20you!";
 
 function scrollTo(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -100,7 +101,7 @@ export default function Home() {
           <li><a href="#what" onClick={(e) => { e.preventDefault(); scrollTo("what"); }}>Services</a></li>
           <li><a href="#approach" onClick={(e) => { e.preventDefault(); scrollTo("approach"); }}>Approach</a></li>
           <li><a href="#pricing" onClick={(e) => { e.preventDefault(); scrollTo("pricing"); }}>Pricing</a></li>
-          <li><a href="#book" className="nav-cta" onClick={(e) => { e.preventDefault(); scrollTo("book"); }}>Book Now</a></li>
+          <li><a href={MAILTO} className="nav-cta">Book Now</a></li>
         </ul>
         <button className="n-tog" ref={togRef} aria-label="Menu" onClick={toggleMenu}>
           <span /><span /><span />
@@ -113,12 +114,71 @@ export default function Home() {
         <a href="#what" onClick={(e) => { e.preventDefault(); closeMenu(); scrollTo("what"); }}>Services</a>
         <a href="#approach" onClick={(e) => { e.preventDefault(); closeMenu(); scrollTo("approach"); }}>Approach</a>
         <a href="#pricing" onClick={(e) => { e.preventDefault(); closeMenu(); scrollTo("pricing"); }}>Pricing</a>
-        <a href="#book" onClick={(e) => { e.preventDefault(); closeMenu(); scrollTo("book"); }}>Book Now</a>
+        <a href={MAILTO} onClick={() => closeMenu()}>Book Now</a>
       </div>
 
-      {/* ═══ HERO ═══ */}
+      {/* ═══ HERO — Centered typographic ═══ */}
       <section className="hero">
-        <div className="hero-text">
+        {/* Background layers */}
+        <div className="hero-glow hero-glow-1" />
+        <div className="hero-glow hero-glow-2" />
+        <div className="hero-glow hero-glow-3" />
+
+        {/* Decorative botanical ring */}
+        <svg className="hero-wreath" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+          {/* Outer ring */}
+          <circle cx="300" cy="300" r="260" stroke="var(--deep)" strokeWidth="0.5" opacity="0.4" />
+          <circle cx="300" cy="300" r="280" stroke="var(--deep)" strokeWidth="0.3" strokeDasharray="4 8" opacity="0.2" />
+
+          {/* Left botanical branch */}
+          <g opacity="0.15" stroke="var(--ink)" strokeWidth="0.8">
+            <path d="M100 300 Q140 280 160 240" />
+            <path d="M130 295 Q110 260 100 220" />
+            <path d="M110 280 Q80 260 60 230" />
+            <path d="M145 270 Q120 230 115 190" />
+            <path d="M160 240 Q150 200 160 160" />
+            {/* Leaves */}
+            <ellipse cx="90" cy="225" rx="18" ry="8" transform="rotate(-50 90 225)" />
+            <ellipse cx="65" cy="240" rx="15" ry="7" transform="rotate(-30 65 240)" />
+            <ellipse cx="108" cy="195" rx="16" ry="7" transform="rotate(-60 108 195)" />
+            <ellipse cx="155" cy="165" rx="14" ry="6" transform="rotate(-80 155 165)" />
+            <ellipse cx="135" cy="240" rx="12" ry="6" transform="rotate(-45 135 240)" />
+          </g>
+
+          {/* Right botanical branch (mirrored) */}
+          <g opacity="0.15" stroke="var(--ink)" strokeWidth="0.8">
+            <path d="M500 300 Q460 280 440 240" />
+            <path d="M470 295 Q490 260 500 220" />
+            <path d="M490 280 Q520 260 540 230" />
+            <path d="M455 270 Q480 230 485 190" />
+            <path d="M440 240 Q450 200 440 160" />
+            <ellipse cx="510" cy="225" rx="18" ry="8" transform="rotate(50 510 225)" />
+            <ellipse cx="535" cy="240" rx="15" ry="7" transform="rotate(30 535 240)" />
+            <ellipse cx="492" cy="195" rx="16" ry="7" transform="rotate(60 492 195)" />
+            <ellipse cx="445" cy="165" rx="14" ry="6" transform="rotate(80 445 165)" />
+            <ellipse cx="465" cy="240" rx="12" ry="6" transform="rotate(45 465 240)" />
+          </g>
+
+          {/* Bottom botanical accent */}
+          <g opacity="0.12" stroke="var(--ink)" strokeWidth="0.7">
+            <path d="M240 520 Q260 480 300 460 Q340 480 360 520" />
+            <ellipse cx="250" cy="500" rx="12" ry="6" transform="rotate(30 250 500)" />
+            <ellipse cx="350" cy="500" rx="12" ry="6" transform="rotate(-30 350 500)" />
+            <ellipse cx="300" cy="465" rx="10" ry="5" />
+          </g>
+
+          {/* Top accent dots */}
+          <circle cx="300" cy="30" r="3" fill="var(--grn)" opacity="0.15" />
+          <circle cx="285" cy="38" r="1.5" fill="var(--grn)" opacity="0.1" />
+          <circle cx="315" cy="38" r="1.5" fill="var(--grn)" opacity="0.1" />
+        </svg>
+
+        {/* Content */}
+        <div className="hero-center">
+          <div className="hero-eyebrow">
+            <span className="lbl-d" />
+            Functional Health · Virtual · Nationwide
+          </div>
           <h1>
             Your body has<br />been talking.<br /><em>Let&apos;s listen.</em>
           </h1>
@@ -126,67 +186,20 @@ export default function Home() {
             Functional health care for people who are tired of being told everything looks
             &ldquo;normal&rdquo; — with the labs, the time, and the attention to finally find real answers.
           </p>
-          <div className="hero-btn">
-            <button className="btn btn-g" onClick={() => scrollTo("book")}>
+          <div className="hero-actions">
+            <a href={MAILTO} className="btn btn-g">
               Schedule Your First Visit
               <ArrowRight />
-            </button>
+            </a>
+            <a href="#about" className="btn btn-o" onClick={(e) => { e.preventDefault(); scrollTo("about"); }}>
+              Learn More
+            </a>
           </div>
         </div>
 
-        <div className="hero-visual">
-          <div className="hero-ring" />
-          <div className="hero-ring-2" />
-          <div className="hero-blob hero-blob-1" />
-          <div className="hero-blob hero-blob-2" />
-
-          {/* Botanical leaves */}
-          <svg className="hero-leaf hero-leaf-1" width="120" height="200" viewBox="0 0 120 200" fill="none" stroke="currentColor" strokeWidth="1">
-            <path d="M60 200 C60 200 60 20 60 20" />
-            <path d="M60 160 C40 140 15 130 10 90 C5 50 35 30 60 50" />
-            <path d="M60 160 C80 140 105 130 110 90 C115 50 85 30 60 50" />
-            <path d="M60 100 C45 80 25 80 20 55 C15 30 40 20 60 40" />
-            <path d="M60 100 C75 80 95 80 100 55 C105 30 80 20 60 40" />
-            <circle cx="60" cy="16" r="5" />
-          </svg>
-          <svg className="hero-leaf hero-leaf-2" width="90" height="160" viewBox="0 0 90 160" fill="none" stroke="currentColor" strokeWidth="0.8">
-            <path d="M45 160 C45 160 45 20 45 20" />
-            <path d="M45 130 C30 110 10 100 8 70 C6 40 30 25 45 45" />
-            <path d="M45 130 C60 110 80 100 82 70 C84 40 60 25 45 45" />
-            <path d="M45 80 C35 65 20 60 18 42 C16 24 35 18 45 35" />
-            <path d="M45 80 C55 65 70 60 72 42 C74 24 55 18 45 35" />
-          </svg>
-          <svg className="hero-leaf hero-leaf-3" width="80" height="130" viewBox="0 0 80 130" fill="none" stroke="currentColor" strokeWidth="0.7">
-            <path d="M40 130 C40 130 40 15 40 15" />
-            <ellipse cx="40" cy="50" rx="28" ry="40" transform="rotate(-8 40 50)" />
-            <ellipse cx="40" cy="50" rx="28" ry="40" transform="rotate(8 40 50)" />
-          </svg>
-
-          {/* Portrait frame — Jenna's photo */}
-          <div className="hero-frame">
-            <Image
-              src="/jenna-toupin.jpg"
-              alt="Jenna Toupin, FNP"
-              fill
-              style={{ objectFit: "cover", objectPosition: "top" }}
-              sizes="340px"
-              priority
-            />
-          </div>
-
-          {/* Floating chips */}
-          <div className="hero-chip hero-chip-1">
-            <div className="chip-label">Sessions</div>
-            <div className="chip-val">Virtual · Nationwide</div>
-          </div>
-          <div className="hero-chip hero-chip-2">
-            <div className="chip-label">Approach</div>
-            <div className="chip-val grn">Root Cause</div>
-          </div>
-        </div>
+        {/* Bottom fade line */}
+        <div className="hero-fade" />
       </section>
-
-      <div className="hr-wrap"><div className="hr-line" /></div>
 
       {/* ═══ ABOUT ═══ */}
       <section className="sec about" id="about">
@@ -426,7 +439,7 @@ export default function Home() {
             Schedule your initial assessment with Jenna. 90 minutes of real attention, advanced labs,
             and the beginning of actual answers.
           </p>
-          <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" className="btn btn-g" style={{ margin: "0 auto" }}>
+          <a href={MAILTO} className="btn btn-g" style={{ margin: "0 auto" }}>
             Schedule Your First Visit
             <ArrowRight />
           </a>
@@ -441,7 +454,7 @@ export default function Home() {
             <li><a href="#about" onClick={(e) => { e.preventDefault(); scrollTo("about"); }}>About</a></li>
             <li><a href="#what" onClick={(e) => { e.preventDefault(); scrollTo("what"); }}>Services</a></li>
             <li><a href="#pricing" onClick={(e) => { e.preventDefault(); scrollTo("pricing"); }}>Pricing</a></li>
-            <li><a href="#book" onClick={(e) => { e.preventDefault(); scrollTo("book"); }}>Book</a></li>
+            <li><a href={MAILTO}>Book</a></li>
           </ul>
           <div className="ft-c">&copy; 2026 Mendli Health · Jenna Toupin, FNP</div>
         </div>
