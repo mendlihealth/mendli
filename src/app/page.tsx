@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useCallback, useState } from "react";
 import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
 
 /* ═══════════════════════════════════════════════════════════════
    Mendli Health — Single-page site
@@ -36,7 +37,7 @@ function ArrowRight() {
 const FAQS = [
   {
     q: "Do you have a physical location?",
-    a: "All Mendli visits are currently virtual — available to patients nationwide. That said, a physical location in Indianapolis is in development for patients who prefer in-person care. If you'd like to be notified when the office opens, let me know when you book.",
+    a: "All Mendli visits are currently virtual — available to patients nationwide. That said, a physical location in Indianapolis is in development for patients who prefer in-person care. If you'd like to be notified when the office opens, just let me know when you book.",
   },
   {
     q: "Do you offer primary care?",
@@ -48,11 +49,11 @@ const FAQS = [
   },
   {
     q: "What's included with the Concierge Membership?",
-    a: "Your membership ($50/month) includes secure messaging between visits, priority scheduling, and ongoing access to your provider. Think of it as always having someone who knows your full case a message away. It's required because continuity is central to how functional health works — your care doesn't pause between appointments.",
+    a: "Your membership ($50/month) includes secure messaging between visits, priority scheduling, and direct access to Jenna. Think of it as always having someone who truly knows your full health picture just a message away. It's required because continuity is how functional health actually works — your care doesn't stop between appointments.",
   },
 ];
 
-/* ─── FAQ Accordion ─── */
+/* ─── FAQ Accordion (Framer Motion) ─── */
 function FaqSection() {
   const [openIdx, setOpenIdx] = useState<number | null>(null);
 
@@ -62,31 +63,54 @@ function FaqSection() {
         <div className="faq-head r">
           <div className="lbl"><span className="lbl-d" /> Questions</div>
           <h2 className="h2">Frequently <em>asked</em></h2>
+          <p className="faq-sub">Everything you need to know before your first visit.</p>
         </div>
-        <div className="faq-list">
-          {FAQS.map((f, i) => (
-            <div
-              key={i}
-              className={`faq-item r${openIdx === i ? " faq-open" : ""}`}
-              onClick={() => setOpenIdx(openIdx === i ? null : i)}
-            >
-              <div className="faq-q">
-                <span className="faq-num">0{i + 1}</span>
-                <span className="faq-question">{f.q}</span>
-                <svg className="faq-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-                  <path d="M6 9l6 6 6-6" />
-                </svg>
-              </div>
-              <div className="faq-a">
-                <p>{f.a}</p>
-              </div>
-            </div>
-          ))}
+        <div className="faq-list r">
+          {FAQS.map((f, i) => {
+            const isOpen = openIdx === i;
+            return (
+              <motion.div
+                key={i}
+                className="faq-card"
+                onClick={() => setOpenIdx(isOpen ? null : i)}
+                layout
+              >
+                <div className="faq-q">
+                  <span className="faq-num">0{i + 1}</span>
+                  <span className="faq-question">{f.q}</span>
+                  <motion.svg
+                    className="faq-chev"
+                    width="20" height="20" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" strokeWidth="1.5"
+                    strokeLinecap="round" strokeLinejoin="round"
+                    animate={{ rotate: isOpen ? 180 : 0 }}
+                    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                  >
+                    <path d="M6 9l6 6 6-6" />
+                  </motion.svg>
+                </div>
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      className="faq-a"
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                      <p>{f.a}</p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>
   );
 }
+
 
 export default function Home() {
   const navRef = useRef<HTMLElement>(null);
