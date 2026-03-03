@@ -543,7 +543,7 @@ export default function Home() {
             <li><a href={MAILTO} title="Book a Consultation">Book</a></li>
           </ul>
           <address className="ft-c" style={{ fontStyle: "normal" }}>
-            &copy; {new Date().getFullYear()} Mendli Health · Jenna Toupin, Board-Certified Family Nurse Practitioner
+            &copy; {new Date().getFullYear()} Mendli Health
           </address>
         </div>
       </footer>
