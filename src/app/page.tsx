@@ -119,20 +119,62 @@ export default function Home() {
 
       {/* ═══ HERO — Centered typographic ═══ */}
       <section className="hero">
-        {/* Base Grain Overlay */}
+        {/* Grain texture overlay */}
         <div className="hero-grain" />
 
-        {/* Moving Aura Gradients */}
-        <div className="hero-aura hero-aura-1" />
-        <div className="hero-aura hero-aura-2" />
-        <div className="hero-aura hero-aura-3" />
+        {/* Radial light behind text */}
+        <div className="hero-light" />
 
-        {/* Precision Geometry - Astrolabe */}
-        <div className="hero-rings">
-          <div className="ring ring-1" />
-          <div className="ring ring-2" />
-          <div className="ring ring-3" />
-        </div>
+        {/* Topographic contour field */}
+        <svg className="hero-topo" viewBox="0 0 1400 900" preserveAspectRatio="xMidYMid slice" fill="none" xmlns="http://www.w3.org/2000/svg">
+          {/* Layer 1 — deepest/lowest contours */}
+          <g className="topo-layer topo-1" stroke="var(--deep)" strokeWidth="0.8" opacity="0.25">
+            <path d="M-40 820 Q200 780 400 790 Q600 800 800 760 Q1000 720 1200 750 Q1350 770 1450 740" />
+            <path d="M-40 760 Q180 710 380 730 Q580 750 780 700 Q980 660 1180 690 Q1340 710 1450 680" />
+            <path d="M-40 700 Q160 640 360 670 Q560 700 760 640 Q960 590 1160 630 Q1330 650 1450 620" />
+          </g>
+
+          {/* Layer 2 — mid contours */}
+          <g className="topo-layer topo-2" stroke="var(--grn)" strokeWidth="0.6" opacity="0.12">
+            <path d="M-40 640 Q140 570 340 610 Q540 650 740 580 Q940 520 1140 570 Q1320 600 1450 560" />
+            <path d="M-40 580 Q120 500 320 550 Q520 600 720 520 Q920 450 1120 510 Q1310 540 1450 500" />
+            <path d="M-40 520 Q100 440 300 490 Q500 540 700 460 Q900 390 1100 450 Q1300 480 1450 440" />
+          </g>
+
+          {/* Layer 3 — elevation contours */}
+          <g className="topo-layer topo-3" stroke="var(--grn)" strokeWidth="0.5" opacity="0.08">
+            <path d="M-40 460 Q80 380 280 430 Q480 480 680 400 Q880 330 1080 390 Q1280 420 1450 380" />
+            <path d="M-40 400 Q60 320 260 370 Q460 420 660 340 Q860 270 1060 330 Q1260 360 1450 320" />
+            <path d="M-40 340 Q80 270 280 310 Q480 350 660 290 Q840 230 1040 280 Q1240 310 1450 270" />
+          </g>
+
+          {/* Layer 4 — peak elevation, tightest contours (center focal) */}
+          <g className="topo-layer topo-4" stroke="var(--terra)" strokeWidth="0.4" opacity="0.06">
+            <path d="M300 300 Q450 250 600 280 Q750 310 900 260 Q1050 220 1100 250" />
+            <path d="M350 270 Q480 230 620 255 Q760 280 880 240 Q1000 210 1060 230" />
+            <path d="M420 250 Q520 220 640 240 Q740 260 840 230 Q940 210 1000 220" />
+          </g>
+
+          {/* Spot elevation markers */}
+          <g opacity="0.15">
+            <circle cx="700" cy="245" r="2" fill="var(--grn)" />
+            <line x1="700" y1="240" x2="700" y2="250" stroke="var(--grn)" strokeWidth="0.5" />
+            <line x1="695" y1="245" x2="705" y2="245" stroke="var(--grn)" strokeWidth="0.5" />
+
+            <circle cx="380" cy="290" r="1.5" fill="var(--terra)" />
+            <line x1="380" y1="286" x2="380" y2="294" stroke="var(--terra)" strokeWidth="0.4" />
+            <line x1="376" y1="290" x2="384" y2="290" stroke="var(--terra)" strokeWidth="0.4" />
+
+            <circle cx="1050" cy="225" r="1.5" fill="var(--grn)" />
+          </g>
+
+          {/* Upper atmosphere contours (very faint) */}
+          <g className="topo-layer topo-5" stroke="var(--deep)" strokeWidth="0.3" opacity="0.1">
+            <path d="M-40 180 Q200 120 400 160 Q600 200 800 140 Q1000 90 1200 130 Q1350 160 1450 120" />
+            <path d="M-40 120 Q200 70 400 100 Q600 130 800 80 Q1000 40 1200 70 Q1350 90 1450 60" />
+            <path d="M-40 60 Q200 30 400 50 Q600 70 800 35 Q1000 10 1200 30 Q1350 45 1450 20" />
+          </g>
+        </svg>
 
         {/* Content */}
         <div className="hero-center">
