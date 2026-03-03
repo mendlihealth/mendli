@@ -105,27 +105,52 @@ export const metadata: Metadata = {
   category: "Health",
 };
 
-/* ─── SEO: JSON-LD Structured Data ─── */
+/* ─── SEO: Advanced JSON-LD Structured Data Graph ─── */
 const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "MedicalBusiness",
+      "@type": ["MedicalClinic", "MedicalBusiness", "HealthAndBeautyBusiness"],
+      "@id": `${SITE_URL}/#clinic`,
       name: "Mendli Health",
       url: SITE_URL,
-      logo: `${SITE_URL}/mendli-logo-t.png`,
-      image: `${SITE_URL}/mendli-logo-t.png`,
-      description: DESCRIPTION,
-      founder: {
-        "@type": "Person",
-        name: "Jenna Toupin",
-        jobTitle: "Board-Certified Family Nurse Practitioner",
+      logo: {
+        "@type": "ImageObject",
+        "@id": `${SITE_URL}/#logo`,
+        inLanguage: "en-US",
+        url: `${SITE_URL}/mendli-logo-t.png`,
+        width: 819,
+        height: 304,
+        caption: "Mendli Health",
       },
+      image: {
+        "@id": `${SITE_URL}/#logo`,
+      },
+      description: DESCRIPTION,
+      medicalSpecialty: [
+        "Functional Medicine",
+        "Primary Care",
+        "Holistic Health",
+        "Preventive Medicine"
+      ],
+      founder: {
+        "@id": `${SITE_URL}/#jenna`,
+      },
+      employees: [
+        {
+          "@id": `${SITE_URL}/#jenna`,
+        }
+      ],
       address: {
         "@type": "PostalAddress",
         addressLocality: "Indianapolis",
         addressRegion: "IN",
         addressCountry: "US",
+      },
+      geo: {
+        "@type": "GeoCoordinates",
+        latitude: 39.7684,
+        longitude: -86.1581,
       },
       areaServed: {
         "@type": "Country",
@@ -134,38 +159,68 @@ const jsonLd = {
       priceRange: "$$",
       telephone: "",
       email: "jenna@mendlihealth.com",
-      medicalSpecialty: "Functional Medicine",
+      sameAs: [
+        /* Add social media URLs here if available */
+      ],
       availableService: [
         {
-          "@type": "MedicalProcedure",
-          name: "Initial Assessment",
-          description:
-            "90-minute deep-dive virtual consultation with advanced functional lab work.",
+          "@type": ["MedicalTherapy", "TherapeuticProcedure"],
+          name: "Functional Medical Assessment",
+          description: "90-minute deep-dive virtual consultation with advanced functional lab work.",
         },
         {
-          "@type": "MedicalProcedure",
-          name: "Follow-Up Visit",
-          description:
-            "45-minute follow-up to review results, adjust protocols, and track progress.",
+          "@type": ["MedicalTherapy", "TherapeuticProcedure"],
+          name: "Concierge Follow-up",
+          description: "45-minute follow-up to review results, adjust protocols, and track progress with unlimited messaging.",
         },
       ],
     },
     {
+      "@type": ["Person", "Physician", "MedicalPractitioner"],
+      "@id": `${SITE_URL}/#jenna`,
+      name: "Jenna Toupin",
+      jobTitle: "Board-Certified Family Nurse Practitioner",
+      description: "Founder and Board-Certified Family Nurse Practitioner specializing in functional medicine.",
+      alumniOf: [],
+      worksFor: {
+        "@id": `${SITE_URL}/#clinic`,
+      },
+      image: {
+        "@type": "ImageObject",
+        url: `${SITE_URL}/jenna-toupin.jpg`,
+      },
+      sameAs: [
+        /* Practitioner's personal LinkedIn or professional pages could go here */
+      ],
+    },
+    {
       "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
       url: SITE_URL,
       name: "Mendli Health",
       description: DESCRIPTION,
       publisher: {
-        "@type": "Organization",
-        name: "Mendli Health",
-        logo: {
-          "@type": "ImageObject",
-          url: `${SITE_URL}/mendli-logo-t.png`,
-        },
+        "@id": `${SITE_URL}/#clinic`,
       },
+      inLanguage: "en-US",
+    },
+    {
+      "@type": "WebPage",
+      "@id": `${SITE_URL}/#webpage`,
+      url: SITE_URL,
+      name: TITLE,
+      isPartOf: {
+        "@id": `${SITE_URL}/#website`,
+      },
+      about: {
+        "@id": `${SITE_URL}/#clinic`,
+      },
+      description: DESCRIPTION,
+      inLanguage: "en-US",
     },
     {
       "@type": "FAQPage",
+      "@id": `${SITE_URL}/#faq`,
       mainEntity: [
         {
           "@type": "Question",

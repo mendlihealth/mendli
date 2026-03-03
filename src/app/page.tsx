@@ -172,18 +172,18 @@ export default function Home() {
   return (
     <>
       {/* ═══ NAV ═══ */}
-      <nav className="nav" ref={navRef}>
-        <a href="#" className="nav-logo" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}>
-          <Image src="/mendli-logo-t.png" alt="Mendli" width={120} height={36} priority style={{ objectFit: 'contain' }} />
+      <nav className="nav" ref={navRef} aria-label="Main Navigation">
+        <a href="#" className="nav-logo" aria-label="Mendli Health Homepage" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}>
+          <Image src="/mendli-logo-t.png" alt="Mendli Health Logo" title="Mendli Health" width={120} height={36} priority style={{ objectFit: 'contain' }} />
         </a>
         <ul className="nav-links">
-          <li><a href="#about" onClick={(e) => { e.preventDefault(); scrollTo("about"); }}>About</a></li>
-          <li><a href="#what" onClick={(e) => { e.preventDefault(); scrollTo("what"); }}>Services</a></li>
-          <li><a href="#approach" onClick={(e) => { e.preventDefault(); scrollTo("approach"); }}>Approach</a></li>
-          <li><a href="#pricing" onClick={(e) => { e.preventDefault(); scrollTo("pricing"); }}>Pricing</a></li>
-          <li><a href={MAILTO} className="nav-cta">Book Now</a></li>
+          <li><a href="#about" title="Learn about Jenna Toupin, FNP" onClick={(e) => { e.preventDefault(); scrollTo("about"); }}>About</a></li>
+          <li><a href="#what" title="View our Functional Medicine Services" onClick={(e) => { e.preventDefault(); scrollTo("what"); }}>Services</a></li>
+          <li><a href="#approach" title="Understand our Root-Cause Approach" onClick={(e) => { e.preventDefault(); scrollTo("approach"); }}>Approach</a></li>
+          <li><a href="#pricing" title="Consultation and Membership Pricing" onClick={(e) => { e.preventDefault(); scrollTo("pricing"); }}>Pricing</a></li>
+          <li><a href={MAILTO} className="nav-cta" title="Book a Functional Medicine Consultation">Book Now</a></li>
         </ul>
-        <button className="n-tog" ref={togRef} aria-label="Menu" onClick={toggleMenu}>
+        <button className="n-tog" ref={togRef} aria-label="Toggle Mobile Menu" onClick={toggleMenu}>
           <span /><span /><span />
         </button>
       </nav>
@@ -198,15 +198,15 @@ export default function Home() {
       </div>
 
       {/* ═══ HERO — Centered typographic ═══ */}
-      <section className="hero">
+      <header className="hero" aria-label="Welcome to Mendli Health">
         {/* Grain texture overlay */}
-        <div className="hero-grain" />
+        <div className="hero-grain" aria-hidden="true" />
 
         {/* Radial light behind text */}
-        <div className="hero-light" />
+        <div className="hero-light" aria-hidden="true" />
 
         {/* Topographic contour field */}
-        <svg className="hero-topo" viewBox="0 0 1400 900" preserveAspectRatio="xMidYMid slice" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg className="hero-topo" aria-hidden="true" viewBox="0 0 1400 900" preserveAspectRatio="xMidYMid slice" fill="none" xmlns="http://www.w3.org/2000/svg">
           {/* Layer 1 — deepest/lowest contours */}
           <g className="topo-layer topo-1" stroke="var(--deep)" strokeWidth="0.8" opacity="0.25">
             <path d="M-40 820 Q200 780 400 790 Q600 800 800 760 Q1000 720 1200 750 Q1350 770 1450 740" />
@@ -258,10 +258,10 @@ export default function Home() {
 
         {/* Content */}
         <div className="hero-center">
-          <div className="hero-eyebrow">
-            <span className="lbl-d" />
+          <h2 className="hero-eyebrow">
+            <span className="lbl-d" aria-hidden="true" />
             Functional Health · Virtual · Nationwide
-          </div>
+          </h2>
           <h1>
             Your body has<br />been talking.<br /><em>Let&apos;s listen.</em>
           </h1>
@@ -270,28 +270,27 @@ export default function Home() {
             &ldquo;normal&rdquo; — with the labs, the time, and the attention to finally find real answers.
           </p>
           <div className="hero-actions">
-            <a href={MAILTO} className="btn btn-g">
+            <a href={MAILTO} className="btn btn-g" title="Schedule Your First Functional Medicine Visit">
               Schedule Your First Visit
               <ArrowRight />
             </a>
-            <a href="#about" className="btn btn-o" onClick={(e) => { e.preventDefault(); scrollTo("about"); }}>
+            <a href="#about" className="btn btn-o" title="Learn More about Mendli Health" onClick={(e) => { e.preventDefault(); scrollTo("about"); }}>
               Learn More
             </a>
           </div>
         </div>
 
         {/* Bottom fade line */}
-        <div className="hero-fade" />
-      </section>
+      </header>
 
       {/* ═══ ABOUT ═══ */}
-      <section className="sec about" id="about">
+      <section className="sec about" id="about" aria-label="About Jenna Toupin">
         <div className="wrap">
           <div className="about-g">
-            <div className="about-text r">
-              <div className="lbl"><span className="lbl-d" /> About Jenna</div>
+            <article className="about-text r">
+              <div className="lbl"><span className="lbl-d" aria-hidden="true" /> About Jenna</div>
               <h2 className="about-name">Jenna Toupin, FNP</h2>
-              <div className="about-title">Board-Certified Family Nurse Practitioner · Functional Health</div>
+              <h3 className="about-title">Board-Certified Family Nurse Practitioner · Functional Health</h3>
               <div className="about-story">
                 <p>
                   I didn&apos;t come to functional medicine through a textbook — I came to it through my own
@@ -310,28 +309,29 @@ export default function Home() {
                   plan that&apos;s <em>truly yours</em>.
                 </p>
               </div>
-            </div>
-            <div className="about-vis r">
+            </article>
+            <aside className="about-vis r">
               <div className="about-img">
                 <Image
                   src="/jenna-toupin.jpg"
-                  alt="Jenna Toupin, FNP"
+                  alt="Portrait of Jenna Toupin, Board-Certified Family Nurse Practitioner"
+                  title="Jenna Toupin, FNP"
                   fill
                   style={{ objectFit: "cover", objectPosition: "top" }}
                   sizes="(min-width: 1024px) 400px, 280px"
                 />
               </div>
-              <div className="about-acc" />
-            </div>
+              <div className="about-acc" aria-hidden="true" />
+            </aside>
           </div>
         </div>
       </section>
 
       {/* ═══ SERVICES ═══ */}
-      <section className="sec what" id="what">
+      <section className="sec what" id="what" aria-label="Functional Medicine Services">
         <div className="wrap">
-          <div className="what-head r">
-            <div className="lbl"><span className="lbl-d" /> Services</div>
+          <header className="what-head r">
+            <div className="lbl"><span className="lbl-d" aria-hidden="true" /> Services</div>
             <h2 className="h2">
               Everything you need,<br /><em>one practitioner</em>
             </h2>
@@ -339,7 +339,7 @@ export default function Home() {
               No referral loops. No fragmented care. I handle the full picture — from ordering labs
               to building your protocol.
             </p>
-          </div>
+          </header>
           <div className="what-grid">
             <div className="what-card r">
               <div className="what-ic ic-g">
@@ -388,10 +388,10 @@ export default function Home() {
       </section>
 
       {/* ═══ APPROACH ═══ */}
-      <section className="sec appr" id="approach">
+      <section className="sec appr" id="approach" aria-label="Our Functional Health Approach">
         <div className="wrap">
-          <div className="appr-head r">
-            <div className="lbl"><span className="lbl-d" /> Approach</div>
+          <header className="appr-head r">
+            <div className="lbl"><span className="lbl-d" aria-hidden="true" /> Approach</div>
             <h2 className="h2">
               Medicine that asks <em>why</em> —<br />not just what.
             </h2>
@@ -399,7 +399,7 @@ export default function Home() {
               Functional health traces symptoms to their roots — examining your biology, environment,
               and history as one connected system.
             </p>
-          </div>
+          </header>
           <div className="appr-row">
             <div className="appr-card r">
               <h3>Unhurried Sessions</h3>
@@ -533,16 +533,18 @@ export default function Home() {
       </section>
 
       {/* ═══ FOOTER ═══ */}
-      <footer>
+      <footer aria-label="Site Footer">
         <div className="ft">
-          <div className="ft-m"><Image src="/mendli-logo-t.png" alt="Mendli" width={100} height={30} style={{ objectFit: 'contain' }} /></div>
+          <div className="ft-m"><Image src="/mendli-logo-t.png" alt="Mendli Health Logo" width={100} height={30} style={{ objectFit: 'contain' }} /></div>
           <ul className="ft-l">
-            <li><a href="#about" onClick={(e) => { e.preventDefault(); scrollTo("about"); }}>About</a></li>
-            <li><a href="#what" onClick={(e) => { e.preventDefault(); scrollTo("what"); }}>Services</a></li>
-            <li><a href="#pricing" onClick={(e) => { e.preventDefault(); scrollTo("pricing"); }}>Pricing</a></li>
-            <li><a href={MAILTO}>Book</a></li>
+            <li><a href="#about" title="About Mendli Health" onClick={(e) => { e.preventDefault(); scrollTo("about"); }}>About</a></li>
+            <li><a href="#what" title="Functional Medicine Services" onClick={(e) => { e.preventDefault(); scrollTo("what"); }}>Services</a></li>
+            <li><a href="#pricing" title="Pricing and Memberships" onClick={(e) => { e.preventDefault(); scrollTo("pricing"); }}>Pricing</a></li>
+            <li><a href={MAILTO} title="Book a Consultation">Book</a></li>
           </ul>
-          <div className="ft-c">&copy; 2026 Mendli Health · Jenna Toupin, FNP</div>
+          <address className="ft-c" style={{ fontStyle: "normal" }}>
+            &copy; {new Date().getFullYear()} Mendli Health · Jenna Toupin, Board-Certified Family Nurse Practitioner
+          </address>
         </div>
       </footer>
     </>
