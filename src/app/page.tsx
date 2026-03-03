@@ -119,59 +119,20 @@ export default function Home() {
 
       {/* ═══ HERO — Centered typographic ═══ */}
       <section className="hero">
-        {/* Background layers */}
-        <div className="hero-glow hero-glow-1" />
-        <div className="hero-glow hero-glow-2" />
-        <div className="hero-glow hero-glow-3" />
+        {/* Base Grain Overlay */}
+        <div className="hero-grain" />
 
-        {/* Decorative botanical ring */}
-        <svg className="hero-wreath" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
-          {/* Outer ring */}
-          <circle cx="300" cy="300" r="260" stroke="var(--deep)" strokeWidth="0.5" opacity="0.4" />
-          <circle cx="300" cy="300" r="280" stroke="var(--deep)" strokeWidth="0.3" strokeDasharray="4 8" opacity="0.2" />
+        {/* Moving Aura Gradients */}
+        <div className="hero-aura hero-aura-1" />
+        <div className="hero-aura hero-aura-2" />
+        <div className="hero-aura hero-aura-3" />
 
-          {/* Left botanical branch */}
-          <g opacity="0.15" stroke="var(--ink)" strokeWidth="0.8">
-            <path d="M100 300 Q140 280 160 240" />
-            <path d="M130 295 Q110 260 100 220" />
-            <path d="M110 280 Q80 260 60 230" />
-            <path d="M145 270 Q120 230 115 190" />
-            <path d="M160 240 Q150 200 160 160" />
-            {/* Leaves */}
-            <ellipse cx="90" cy="225" rx="18" ry="8" transform="rotate(-50 90 225)" />
-            <ellipse cx="65" cy="240" rx="15" ry="7" transform="rotate(-30 65 240)" />
-            <ellipse cx="108" cy="195" rx="16" ry="7" transform="rotate(-60 108 195)" />
-            <ellipse cx="155" cy="165" rx="14" ry="6" transform="rotate(-80 155 165)" />
-            <ellipse cx="135" cy="240" rx="12" ry="6" transform="rotate(-45 135 240)" />
-          </g>
-
-          {/* Right botanical branch (mirrored) */}
-          <g opacity="0.15" stroke="var(--ink)" strokeWidth="0.8">
-            <path d="M500 300 Q460 280 440 240" />
-            <path d="M470 295 Q490 260 500 220" />
-            <path d="M490 280 Q520 260 540 230" />
-            <path d="M455 270 Q480 230 485 190" />
-            <path d="M440 240 Q450 200 440 160" />
-            <ellipse cx="510" cy="225" rx="18" ry="8" transform="rotate(50 510 225)" />
-            <ellipse cx="535" cy="240" rx="15" ry="7" transform="rotate(30 535 240)" />
-            <ellipse cx="492" cy="195" rx="16" ry="7" transform="rotate(60 492 195)" />
-            <ellipse cx="445" cy="165" rx="14" ry="6" transform="rotate(80 445 165)" />
-            <ellipse cx="465" cy="240" rx="12" ry="6" transform="rotate(45 465 240)" />
-          </g>
-
-          {/* Bottom botanical accent */}
-          <g opacity="0.12" stroke="var(--ink)" strokeWidth="0.7">
-            <path d="M240 520 Q260 480 300 460 Q340 480 360 520" />
-            <ellipse cx="250" cy="500" rx="12" ry="6" transform="rotate(30 250 500)" />
-            <ellipse cx="350" cy="500" rx="12" ry="6" transform="rotate(-30 350 500)" />
-            <ellipse cx="300" cy="465" rx="10" ry="5" />
-          </g>
-
-          {/* Top accent dots */}
-          <circle cx="300" cy="30" r="3" fill="var(--grn)" opacity="0.15" />
-          <circle cx="285" cy="38" r="1.5" fill="var(--grn)" opacity="0.1" />
-          <circle cx="315" cy="38" r="1.5" fill="var(--grn)" opacity="0.1" />
-        </svg>
+        {/* Precision Geometry - Astrolabe */}
+        <div className="hero-rings">
+          <div className="ring ring-1" />
+          <div className="ring ring-2" />
+          <div className="ring ring-3" />
+        </div>
 
         {/* Content */}
         <div className="hero-center">
