@@ -174,7 +174,7 @@ export default function Home() {
       {/* ═══ NAV ═══ */}
       <nav className="nav" ref={navRef}>
         <a href="#" className="nav-logo" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}>
-          Mendli Health
+          <Image src="/mendli-logo.png" alt="Mendli" width={120} height={36} priority style={{ objectFit: 'contain' }} />
         </a>
         <ul className="nav-links">
           <li><a href="#about" onClick={(e) => { e.preventDefault(); scrollTo("about"); }}>About</a></li>
@@ -535,7 +535,7 @@ export default function Home() {
       {/* ═══ FOOTER ═══ */}
       <footer>
         <div className="ft">
-          <div className="ft-m">Mendli Health</div>
+          <div className="ft-m"><Image src="/mendli-logo.png" alt="Mendli" width={100} height={30} style={{ objectFit: 'contain' }} /></div>
           <ul className="ft-l">
             <li><a href="#about" onClick={(e) => { e.preventDefault(); scrollTo("about"); }}>About</a></li>
             <li><a href="#what" onClick={(e) => { e.preventDefault(); scrollTo("what"); }}>Services</a></li>
