@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
 import Image from "next/image";
 
 /* ═══════════════════════════════════════════════════════════════
@@ -29,6 +29,62 @@ function ArrowRight() {
     <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
       <path d="M3 8h10M9 4l4 4-4 4" />
     </svg>
+  );
+}
+
+/* ─── FAQ data ─── */
+const FAQS = [
+  {
+    q: "Do you have a physical location?",
+    a: "All Mendli visits are currently virtual — available to patients nationwide. That said, a physical location in Indianapolis is in development for patients who prefer in-person care. If you'd like to be notified when the office opens, let me know when you book.",
+  },
+  {
+    q: "Do you offer primary care?",
+    a: "Yes — I'm a Board-Certified Family Nurse Practitioner, and primary care is what I trained in. I grew up around it, too; my dad was a Family Physician. Once the Indianapolis office is established, I plan to offer a dedicated primary care package alongside functional health services.",
+  },
+  {
+    q: "Do you take insurance?",
+    a: "Mendli is currently out-of-network with all insurance plans. This model allows me to spend 60–90 minutes with you instead of 12 — without the limitations insurance-based practices face. I provide superbills after each visit that you can submit to your insurer for potential reimbursement, and I accept HSA and FSA cards.",
+  },
+  {
+    q: "What's included with the Concierge Membership?",
+    a: "Your membership ($50/month) includes secure messaging between visits, priority scheduling, and ongoing access to your provider. Think of it as always having someone who knows your full case a message away. It's required because continuity is central to how functional health works — your care doesn't pause between appointments.",
+  },
+];
+
+/* ─── FAQ Accordion ─── */
+function FaqSection() {
+  const [openIdx, setOpenIdx] = useState<number | null>(null);
+
+  return (
+    <section className="sec faq" id="faq">
+      <div className="wrap">
+        <div className="faq-head r">
+          <div className="lbl"><span className="lbl-d" /> Questions</div>
+          <h2 className="h2">Frequently <em>asked</em></h2>
+        </div>
+        <div className="faq-list">
+          {FAQS.map((f, i) => (
+            <div
+              key={i}
+              className={`faq-item r${openIdx === i ? " faq-open" : ""}`}
+              onClick={() => setOpenIdx(openIdx === i ? null : i)}
+            >
+              <div className="faq-q">
+                <span className="faq-num">0{i + 1}</span>
+                <span className="faq-question">{f.q}</span>
+                <svg className="faq-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
+              </div>
+              <div className="faq-a">
+                <p>{f.a}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -427,6 +483,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* ═══ FAQ ═══ */}
+      <FaqSection />
 
       {/* ═══ CTA ═══ */}
       <section className="cta" id="book">
