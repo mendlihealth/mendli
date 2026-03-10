@@ -408,6 +408,7 @@ export default function Home() {
   }, []);
 
   /* Nav scroll effect + scroll-spy for active section */
+  const lastY = useRef(0);
   useEffect(() => {
     let ticking = false;
     const handleScroll = () => {
@@ -415,6 +416,19 @@ export default function Home() {
         requestAnimationFrame(() => {
           const y = window.scrollY;
           navRef.current?.classList.toggle("s", y > 40);
+
+          // Hide on scroll-down, show on scroll-up (mobile only)
+          const isMobile = window.innerWidth < 768;
+          if (isMobile && navRef.current) {
+            if (y > lastY.current && y > 100) {
+              navRef.current.classList.add("nav-hidden");
+            } else {
+              navRef.current.classList.remove("nav-hidden");
+            }
+          } else {
+            navRef.current?.classList.remove("nav-hidden");
+          }
+          lastY.current = y;
 
           // Scroll-spy: find which section is most visible
           let current: string | null = null;
