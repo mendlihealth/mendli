@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useCallback, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -13,6 +13,80 @@ const MAILTO =
 
 function scrollTo(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+/* ─── Typewriter — cycling accent word ─── */
+const TYPEWRITER_WORDS = ['listened to.', 'understood.', 'investigated.', 'answered.'];
+const TYPE_MS = 80;
+const DELETE_MS = 50;
+const HOLD_MS = 2200;
+const PAUSE_MS = 400;
+
+function TypewriterText() {
+  const [display, setDisplay] = useState('');
+  const phase = useRef<'typing' | 'holding' | 'deleting' | 'pausing'>('typing');
+  const wordIdx = useRef(0);
+  const charIdx = useRef(0);
+  const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
+
+  useEffect(() => {
+    function step() {
+      const word = TYPEWRITER_WORDS[wordIdx.current];
+      switch (phase.current) {
+        case 'typing': {
+          charIdx.current++;
+          setDisplay(word.slice(0, charIdx.current));
+          if (charIdx.current >= word.length) {
+            phase.current = 'holding';
+            timer.current = setTimeout(step, HOLD_MS);
+          } else {
+            timer.current = setTimeout(step, TYPE_MS);
+          }
+          break;
+        }
+        case 'holding': {
+          phase.current = 'deleting';
+          timer.current = setTimeout(step, DELETE_MS);
+          break;
+        }
+        case 'deleting': {
+          charIdx.current--;
+          setDisplay(word.slice(0, charIdx.current));
+          if (charIdx.current <= 0) {
+            phase.current = 'pausing';
+            timer.current = setTimeout(step, PAUSE_MS);
+          } else {
+            timer.current = setTimeout(step, DELETE_MS);
+          }
+          break;
+        }
+        case 'pausing': {
+          wordIdx.current = (wordIdx.current + 1) % TYPEWRITER_WORDS.length;
+          charIdx.current = 0;
+          phase.current = 'typing';
+          timer.current = setTimeout(step, TYPE_MS);
+          break;
+        }
+      }
+    }
+    timer.current = setTimeout(step, TYPE_MS);
+    return () => { if (timer.current) clearTimeout(timer.current); };
+  }, []);
+
+  return (
+    <span style={{ fontStyle: 'italic', color: 'var(--taupe)' }}>
+      {display}
+      <span
+        className="typewriter-cursor"
+        style={{
+          display: 'inline-block', width: 3, height: '0.8em',
+          background: 'var(--taupe)', marginLeft: 2,
+          verticalAlign: 'baseline', borderRadius: 2,
+          position: 'relative', top: '0.05em',
+        }}
+      />
+    </span>
+  );
 }
 
 /* ─── Stars SVG (for testimonial) ─── */
@@ -53,58 +127,250 @@ const FAQS = [
   },
 ];
 
-/* ─── FAQ Accordion (Framer Motion) ─── */
+/* ─── Provider Card — Production-ready, large format ─── */
+function ProviderCard() {
+  return (
+    <div style={{ position: 'relative' }}>
+      {/* Ambient glow behind card */}
+      <div style={{
+        position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+        width: '120%', height: '120%', borderRadius: '50%',
+        background: 'radial-gradient(circle, rgba(58,43,32,.1) 0%, rgba(58,43,32,.03) 40%, transparent 70%)',
+        pointerEvents: 'none', filter: 'blur(50px)',
+      }} />
+      <div style={{
+        background: 'linear-gradient(180deg, #fff 0%, #FEFCF9 100%)',
+        borderRadius: 32, width: '100%', maxWidth: 420,
+        boxShadow: '0 1px 3px rgba(58,43,32,.05), 0 12px 32px rgba(58,43,32,.1), 0 32px 80px rgba(58,43,32,.08)',
+        position: 'relative', overflow: 'hidden',
+      }}>
+        {/* Noise texture */}
+        <div style={{
+          position: 'absolute', inset: 0, opacity: 0.02, zIndex: 1, pointerEvents: 'none',
+          backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 256 256\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'n\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.8\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23n)\'/%3E%3C/svg%3E")',
+          backgroundSize: '128px 128px',
+        }} />
+        {/* Rim light */}
+        <div style={{
+          position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none', borderRadius: 32,
+          boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.9), inset 0 -1px 0 rgba(58,43,32,0.02)',
+        }} />
+
+        {/* Header gradient */}
+        <div style={{
+          height: 110,
+          background: 'linear-gradient(180deg, rgba(58,43,32,0.05) 0%, transparent 100%)',
+          position: 'relative', zIndex: 2,
+        }} />
+
+        {/* Avatar */}
+        <div style={{ marginTop: -70, display: 'flex', justifyContent: 'center', marginBottom: 18, position: 'relative', zIndex: 3 }}>
+          <div style={{ position: 'relative' }}>
+            {/* Breathing glow */}
+            <div style={{
+              position: 'absolute', top: '50%', left: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: 190, height: 190, borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(58,43,32,0.06) 0%, transparent 70%)',
+              animation: 'morph 6s ease-in-out infinite',
+              pointerEvents: 'none',
+            }} />
+            <Image
+              src="/jenna-headshot.png"
+              alt="Jenna Toupin, FNP"
+              width={140}
+              height={140}
+              style={{
+                borderRadius: '50%', objectFit: 'cover',
+                border: '5px solid #fff',
+                boxShadow: '0 6px 24px rgba(58,43,32,0.12), 0 2px 6px rgba(58,43,32,0.06)',
+              }}
+            />
+            {/* Verified badge */}
+            <div style={{
+              position: 'absolute', bottom: 8, right: 8,
+              width: 28, height: 28, borderRadius: '50%',
+              background: '#10B981', border: '3.5px solid #fff',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              boxShadow: '0 2px 8px rgba(16,185,129,0.35)',
+            }}>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5" /></svg>
+            </div>
+          </div>
+        </div>
+
+        {/* Body */}
+        <div style={{ padding: '0 36px 36px', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative', zIndex: 2 }}>
+          {/* Name */}
+          <span style={{
+            fontFamily: 'var(--serif)', fontSize: 26, fontWeight: 500,
+            color: 'var(--ink)', letterSpacing: '-0.02em', marginBottom: 4,
+          }}>Jenna Toupin</span>
+
+          {/* Subtitle */}
+          <span style={{
+            fontFamily: 'var(--sans)', fontSize: 12, fontWeight: 600,
+            color: 'var(--ink4)',
+            letterSpacing: '0.05em', marginBottom: 20,
+          }}>Family Nurse Practitioner</span>
+
+          {/* Credentials row */}
+          <div style={{ display: 'flex', gap: 8, marginBottom: 20, width: '100%' }}>
+            {[
+              { icon: 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z', label: 'Board Certified' },
+              { icon: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z', label: '8+ Years' },
+            ].map((c, i) => (
+              <div key={i} style={{
+                flex: 1, display: 'flex', alignItems: 'center', gap: 8,
+                padding: '10px 14px', borderRadius: 14,
+                background: 'rgba(58,43,32,0.03)', border: '1px solid rgba(58,43,32,0.05)',
+              }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ink4)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d={c.icon} /></svg>
+                <span style={{ fontFamily: 'var(--sans)', fontSize: 11, fontWeight: 600, color: 'var(--ink2)' }}>{c.label}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Badges */}
+          <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' as const, justifyContent: 'center', marginBottom: 20 }}>
+            {['Functional', 'Root Cause', 'Holistic', 'Preventive'].map(t => (
+              <span key={t} style={{
+                fontFamily: 'var(--sans)', fontSize: 10, fontWeight: 600,
+                color: 'var(--linen)', background: 'var(--clay)',
+                padding: '6px 14px', borderRadius: 20,
+                letterSpacing: '0.03em',
+              }}>{t}</span>
+            ))}
+          </div>
+
+          {/* Divider */}
+          <div style={{ width: '100%', height: 1, background: 'rgba(58,43,32,0.06)', marginBottom: 20 }} />
+
+          {/* Next available */}
+          <div style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            width: '100%', padding: '12px 16px', borderRadius: 16,
+            background: 'rgba(58,43,32,0.03)', border: '1px solid rgba(58,43,32,0.05)',
+            marginBottom: 20,
+          }}>
+            <div>
+              <div style={{ fontFamily: 'var(--sans)', fontSize: 9, fontWeight: 700, color: 'var(--ink5)', textTransform: 'uppercase' as const, letterSpacing: '0.1em', marginBottom: 3 }}>Next available</div>
+              <div style={{ fontFamily: 'var(--sans)', fontSize: 13, fontWeight: 700, color: '#10B981' }}>This Week</div>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--ink4)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg>
+              <span style={{ fontFamily: 'var(--sans)', fontSize: 11, fontWeight: 600, color: 'var(--ink3)' }}>Virtual · Nationwide</span>
+            </div>
+          </div>
+
+          {/* CTA */}
+          <a href={MAILTO} className="nav-cta" style={{
+            width: '100%', textAlign: 'center' as const,
+            fontSize: '.875rem', padding: '14px 0',
+            display: 'block',
+          }}>
+            Book a Consultation
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── FAQ Accordion — Welli-style glassmorphic ─── */
+const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
+
+function FaqItem({ q, a, isOpen, onToggle, index }: {
+  q: string; a: string; isOpen: boolean; onToggle: () => void; index: number;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.06, duration: 0.5, ease: EASE }}
+      style={{
+        background: 'rgba(254,252,249,0.72)',
+        backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)',
+        borderRadius: 22,
+        border: `1px solid ${isOpen ? 'rgba(58,43,32,0.12)' : 'rgba(58,43,32,0.04)'}`,
+        boxShadow: isOpen
+          ? '0 12px 40px rgba(58,43,32,0.07), inset 0 1px 0 rgba(255,255,255,0.9)'
+          : '0 2px 8px rgba(58,43,32,0.03), inset 0 1px 0 rgba(255,255,255,0.9)',
+        marginBottom: 12, overflow: 'hidden',
+        transition: 'border-color 0.3s, box-shadow 0.3s',
+        cursor: 'pointer',
+      }}
+      onClick={onToggle}
+    >
+      <div style={{
+        width: '100%', padding: '24px 28px',
+        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+        gap: 20, textAlign: 'left',
+      }}>
+        <span style={{
+          fontFamily: 'var(--sans)', fontSize: 'clamp(15px, 1.6vw, 17px)',
+          fontWeight: 600, color: 'var(--ink)', lineHeight: 1.45,
+        }}>{q}</span>
+        <motion.div
+          animate={{ rotate: isOpen ? 45 : 0 }}
+          transition={{ duration: 0.25, ease: [0.25, 1, 0.5, 1] }}
+          style={{
+            width: 32, height: 32, borderRadius: 10, flexShrink: 0,
+            background: isOpen ? 'var(--clay)' : 'rgba(58,43,32,0.1)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            transition: 'background 0.25s',
+          }}
+        >
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M7 1v12M1 7h12" stroke={isOpen ? '#fff' : 'var(--ink4)'} strokeWidth="1.8" strokeLinecap="round" />
+          </svg>
+        </motion.div>
+      </div>
+      <AnimatePresence initial={false}>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: [0.25, 1, 0.5, 1] }}
+            style={{ overflow: 'hidden' }}
+          >
+            <div style={{ padding: '0 28px', marginBottom: 24 }}>
+              <div style={{ height: 1, background: 'rgba(58,43,32,0.06)', marginBottom: 18 }} />
+              <p style={{
+                fontFamily: 'var(--sans)', fontSize: 'clamp(14px, 1.4vw, 15.5px)',
+                fontWeight: 400, lineHeight: 1.8, color: 'var(--ink3)', margin: 0,
+              }}>{a}</p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+}
+
 function FaqSection() {
   const [openIdx, setOpenIdx] = useState<number | null>(null);
 
   return (
     <section className="sec faq" id="faq">
       <div className="wrap">
-        <div className="faq-head r">
-          <div className="lbl"><span className="lbl-d" /> Questions</div>
-          <h2 className="h2">Frequently <em>asked</em></h2>
-          <p className="faq-sub">Everything you need to know before your first visit.</p>
+        <div className="faq-head r" style={{ textAlign: 'center' }}>
+          <h2 className="h2" style={{ fontSize: 'clamp(48px, 9vw, 64px)', letterSpacing: '-0.035em', lineHeight: 1.08 }}>Frequently <em>asked</em></h2>
+          <p className="faq-sub" style={{ margin: '0 auto' }}>Everything you need to know before your first visit.</p>
         </div>
-        <div className="faq-list r">
-          {FAQS.map((f, i) => {
-            const isOpen = openIdx === i;
-            return (
-              <motion.div
-                key={i}
-                className="faq-card"
-                onClick={() => setOpenIdx(isOpen ? null : i)}
-                layout
-              >
-                <div className="faq-q">
-                  <span className="faq-num">0{i + 1}</span>
-                  <span className="faq-question">{f.q}</span>
-                  <motion.svg
-                    className="faq-chev"
-                    width="20" height="20" viewBox="0 0 24 24"
-                    fill="none" stroke="currentColor" strokeWidth="1.5"
-                    strokeLinecap="round" strokeLinejoin="round"
-                    animate={{ rotate: isOpen ? 180 : 0 }}
-                    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                  >
-                    <path d="M6 9l6 6 6-6" />
-                  </motion.svg>
-                </div>
-                <AnimatePresence initial={false}>
-                  {isOpen && (
-                    <motion.div
-                      className="faq-a"
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                    >
-                      <p>{f.a}</p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            );
-          })}
+        <div style={{ maxWidth: 740, margin: '0 auto' }}>
+          {FAQS.map((f, i) => (
+            <FaqItem
+              key={i}
+              q={f.q}
+              a={f.a}
+              isOpen={openIdx === i}
+              onToggle={() => setOpenIdx(openIdx === i ? null : i)}
+              index={i}
+            />
+          ))}
         </div>
       </div>
     </section>
@@ -112,10 +378,11 @@ function FaqSection() {
 }
 
 
+const SECTIONS = ["about", "what", "approach", "pricing"] as const;
+
 export default function Home() {
   const navRef = useRef<HTMLElement>(null);
-  const togRef = useRef<HTMLButtonElement>(null);
-  const mmRef = useRef<HTMLDivElement>(null);
+  const [activeSection, setActiveSection] = useState<string | null>(null);
 
   /* Scroll reveal */
   useEffect(() => {
@@ -140,157 +407,106 @@ export default function Home() {
     return () => obs.disconnect();
   }, []);
 
-  /* Nav scroll effect */
+  /* Nav scroll effect + scroll-spy for active section */
   useEffect(() => {
     let ticking = false;
     const handleScroll = () => {
       if (!ticking) {
         requestAnimationFrame(() => {
-          navRef.current?.classList.toggle("s", window.scrollY > 40);
+          const y = window.scrollY;
+          navRef.current?.classList.toggle("s", y > 40);
+
+          // Scroll-spy: find which section is most visible
+          let current: string | null = null;
+          for (const id of SECTIONS) {
+            const el = document.getElementById(id);
+            if (el) {
+              const rect = el.getBoundingClientRect();
+              if (rect.top <= 200) current = id;
+            }
+          }
+          setActiveSection(current);
           ticking = false;
         });
         ticking = true;
       }
     };
     window.addEventListener("scroll", handleScroll);
+    handleScroll(); // init
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  /* Mobile menu toggle */
-  const toggleMenu = useCallback(() => {
-    togRef.current?.classList.toggle("open");
-    mmRef.current?.classList.toggle("open");
-    document.body.style.overflow = mmRef.current?.classList.contains("open") ? "hidden" : "";
-  }, []);
-
-  const closeMenu = useCallback(() => {
-    togRef.current?.classList.remove("open");
-    mmRef.current?.classList.remove("open");
-    document.body.style.overflow = "";
+  /* Dark-zone detection — swap nav colors when over dark sections */
+  useEffect(() => {
+    const darkEls = document.querySelectorAll('[data-header-theme="dark"]');
+    if (darkEls.length === 0) return;
+    const obs = new IntersectionObserver(
+      (entries) => {
+        const anyDark = entries.some((e) => e.isIntersecting);
+        navRef.current?.classList.toggle("dark-zone", anyDark);
+      },
+      { rootMargin: "0px 0px -92% 0px", threshold: 0 }
+    );
+    darkEls.forEach((el) => obs.observe(el));
+    return () => obs.disconnect();
   }, []);
 
   return (
     <>
-      {/* ═══ NAV ═══ */}
+      {/* ═══ NAV — Floating Capsule ═══ */}
       <nav className="nav" ref={navRef} aria-label="Main Navigation">
-        <a href="#" className="nav-logo" aria-label="Mendli Health Homepage" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}>
-          <Image src="/mendli-logo-t.png" alt="Mendli Health Logo" title="Mendli Health" width={120} height={36} priority style={{ objectFit: 'contain' }} />
-        </a>
-        <ul className="nav-links">
-          <li><a href="#about" title="Learn about Jenna Toupin, FNP" onClick={(e) => { e.preventDefault(); scrollTo("about"); }}>About</a></li>
-          <li><a href="#what" title="View our Functional Medicine Services" onClick={(e) => { e.preventDefault(); scrollTo("what"); }}>Services</a></li>
-          <li><a href="#approach" title="Understand our Root-Cause Approach" onClick={(e) => { e.preventDefault(); scrollTo("approach"); }}>Approach</a></li>
-          <li><a href="#pricing" title="Consultation and Membership Pricing" onClick={(e) => { e.preventDefault(); scrollTo("pricing"); }}>Pricing</a></li>
-          <li><a href={MAILTO} className="nav-cta" title="Book a Functional Medicine Consultation">Book Now</a></li>
-        </ul>
-        <button className="n-tog" ref={togRef} aria-label="Toggle Mobile Menu" onClick={toggleMenu}>
-          <span /><span /><span />
-        </button>
+        <div className="nav-inner">
+          <a href="#" className="nav-logo" aria-label="Mendli Health Homepage" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}>
+            <Image src="/mendli-logo-t.png" alt="Mendli Health Logo" title="Mendli Health" width={120} height={36} priority style={{ objectFit: 'contain' }} />
+          </a>
+          <ul className="nav-capsule">
+            <li><a href="#about" className={activeSection === "about" ? "active" : ""} title="Learn about Jenna Toupin, FNP" onClick={(e) => { e.preventDefault(); scrollTo("about"); }}>About</a></li>
+            <li><a href="#what" className={activeSection === "what" ? "active" : ""} title="View our Functional Medicine Services" onClick={(e) => { e.preventDefault(); scrollTo("what"); }}>Services</a></li>
+            <li><a href="#approach" className={activeSection === "approach" ? "active" : ""} title="Understand our Root-Cause Approach" onClick={(e) => { e.preventDefault(); scrollTo("approach"); }}>Approach</a></li>
+            <li><a href="#pricing" className={activeSection === "pricing" ? "active" : ""} title="Consultation and Membership Pricing" onClick={(e) => { e.preventDefault(); scrollTo("pricing"); }}>Pricing</a></li>
+          </ul>
+          <div className="nav-right">
+            <a href={MAILTO} className="nav-cta" title="Book a Functional Medicine Consultation">Book Now</a>
+          </div>
+        </div>
       </nav>
 
-      {/* Mobile menu */}
-      <div className="mm" ref={mmRef}>
-        <a href="#about" onClick={(e) => { e.preventDefault(); closeMenu(); scrollTo("about"); }}>About</a>
-        <a href="#what" onClick={(e) => { e.preventDefault(); closeMenu(); scrollTo("what"); }}>Services</a>
-        <a href="#approach" onClick={(e) => { e.preventDefault(); closeMenu(); scrollTo("approach"); }}>Approach</a>
-        <a href="#pricing" onClick={(e) => { e.preventDefault(); closeMenu(); scrollTo("pricing"); }}>Pricing</a>
-        <a href={MAILTO} onClick={() => closeMenu()}>Book Now</a>
-      </div>
-
-      {/* ═══ HERO — Centered typographic ═══ */}
+      {/* ═══ HERO — Typewriter + Provider Card ═══ */}
       <header className="hero" aria-label="Welcome to Mendli Health">
         {/* Grain texture overlay */}
         <div className="hero-grain" aria-hidden="true" />
 
+        {/* Morphing organic shape behind everything */}
+        <div className="hero-morph" aria-hidden="true" />
+
         {/* Radial light behind text */}
         <div className="hero-light" aria-hidden="true" />
 
-        {/* Topographic contour field */}
-        <svg className="hero-topo" aria-hidden="true" viewBox="0 0 1400 900" preserveAspectRatio="xMidYMid slice" fill="none" xmlns="http://www.w3.org/2000/svg">
-          {/* Layer 1 — deepest/lowest contours */}
-          <g className="topo-layer topo-1" stroke="var(--deep)" strokeWidth="0.8" opacity="0.25">
-            <path d="M-40 820 Q200 780 400 790 Q600 800 800 760 Q1000 720 1200 750 Q1350 770 1450 740" />
-            <path d="M-40 760 Q180 710 380 730 Q580 750 780 700 Q980 660 1180 690 Q1340 710 1450 680" />
-            <path d="M-40 700 Q160 640 360 670 Q560 700 760 640 Q960 590 1160 630 Q1330 650 1450 620" />
-          </g>
-
-          {/* Layer 2 — mid contours */}
-          <g className="topo-layer topo-2" stroke="var(--grn)" strokeWidth="0.6" opacity="0.12">
-            <path d="M-40 640 Q140 570 340 610 Q540 650 740 580 Q940 520 1140 570 Q1320 600 1450 560" />
-            <path d="M-40 580 Q120 500 320 550 Q520 600 720 520 Q920 450 1120 510 Q1310 540 1450 500" />
-            <path d="M-40 520 Q100 440 300 490 Q500 540 700 460 Q900 390 1100 450 Q1300 480 1450 440" />
-          </g>
-
-          {/* Layer 3 — elevation contours */}
-          <g className="topo-layer topo-3" stroke="var(--grn)" strokeWidth="0.5" opacity="0.08">
-            <path d="M-40 460 Q80 380 280 430 Q480 480 680 400 Q880 330 1080 390 Q1280 420 1450 380" />
-            <path d="M-40 400 Q60 320 260 370 Q460 420 660 340 Q860 270 1060 330 Q1260 360 1450 320" />
-            <path d="M-40 340 Q80 270 280 310 Q480 350 660 290 Q840 230 1040 280 Q1240 310 1450 270" />
-          </g>
-
-          {/* Layer 4 — peak elevation, tightest contours (center focal) */}
-          <g className="topo-layer topo-4" stroke="var(--terra)" strokeWidth="0.4" opacity="0.06">
-            <path d="M300 300 Q450 250 600 280 Q750 310 900 260 Q1050 220 1100 250" />
-            <path d="M350 270 Q480 230 620 255 Q760 280 880 240 Q1000 210 1060 230" />
-            <path d="M420 250 Q520 220 640 240 Q740 260 840 230 Q940 210 1000 220" />
-          </g>
-
-          {/* Spot elevation markers */}
-          <g opacity="0.15">
-            <circle cx="700" cy="245" r="2" fill="var(--grn)" />
-            <line x1="700" y1="240" x2="700" y2="250" stroke="var(--grn)" strokeWidth="0.5" />
-            <line x1="695" y1="245" x2="705" y2="245" stroke="var(--grn)" strokeWidth="0.5" />
-
-            <circle cx="380" cy="290" r="1.5" fill="var(--terra)" />
-            <line x1="380" y1="286" x2="380" y2="294" stroke="var(--terra)" strokeWidth="0.4" />
-            <line x1="376" y1="290" x2="384" y2="290" stroke="var(--terra)" strokeWidth="0.4" />
-
-            <circle cx="1050" cy="225" r="1.5" fill="var(--grn)" />
-          </g>
-
-          {/* Upper atmosphere contours (very faint) */}
-          <g className="topo-layer topo-5" stroke="var(--deep)" strokeWidth="0.3" opacity="0.1">
-            <path d="M-40 180 Q200 120 400 160 Q600 200 800 140 Q1000 90 1200 130 Q1350 160 1450 120" />
-            <path d="M-40 120 Q200 70 400 100 Q600 130 800 80 Q1000 40 1200 70 Q1350 90 1450 60" />
-            <path d="M-40 60 Q200 30 400 50 Q600 70 800 35 Q1000 10 1200 30 Q1350 45 1450 20" />
-          </g>
-        </svg>
-
         {/* Content */}
         <div className="hero-center">
-          <h2 className="hero-eyebrow">
-            <span className="lbl-d" aria-hidden="true" />
-            Functional Health · Virtual · Nationwide
-          </h2>
           <h1>
-            Your body has<br />been talking.<br /><em>Let&apos;s listen.</em>
+            Your health,<br /><TypewriterText />
           </h1>
           <p className="hero-p">
-            Functional health care for people who are tired of being told everything looks
-            &ldquo;normal&rdquo; — with the labs, the time, and the attention to finally find real answers.
+            Root-cause functional medicine with 60–90 minute visits, advanced diagnostics, and a provider who actually listens. Virtual. Nationwide.
           </p>
           <div className="hero-actions">
             <a href={MAILTO} className="btn btn-g" title="Schedule Your First Functional Medicine Visit">
-              Schedule Your First Visit
-              <ArrowRight />
+              Schedule Now
             </a>
             <a href="#about" className="btn btn-o" title="Learn More about Mendli Health" onClick={(e) => { e.preventDefault(); scrollTo("about"); }}>
               Learn More
             </a>
           </div>
         </div>
-
-        {/* Bottom fade line */}
       </header>
 
       {/* ═══ ABOUT ═══ */}
-      <section className="sec about" id="about" aria-label="About Jenna Toupin">
+      <section className="sec about" id="about" aria-label="About Jenna Toupin" data-header-theme="dark">
         <div className="wrap">
           <div className="about-g">
             <article className="about-text r">
-              <div className="lbl"><span className="lbl-d" aria-hidden="true" /> About Jenna</div>
-              <h2 className="about-name">Jenna Toupin, FNP</h2>
-              <h3 className="about-title">Board-Certified Family Nurse Practitioner · Functional Health</h3>
+              <h2 className="about-name" style={{ fontSize: 'clamp(36px, 7vw, 56px)', letterSpacing: '-0.035em', lineHeight: 1.08, marginBottom: 24 }}>Jenna Toupin, <em style={{ fontStyle: 'italic', fontWeight: 300 }}>FNP</em></h2>
               <div className="about-story">
                 <p>
                   I didn&apos;t come to functional medicine through a textbook — I came to it through my own
@@ -310,18 +526,8 @@ export default function Home() {
                 </p>
               </div>
             </article>
-            <aside className="about-vis r">
-              <div className="about-img">
-                <Image
-                  src="/jenna-toupin.jpg"
-                  alt="Portrait of Jenna Toupin, Board-Certified Family Nurse Practitioner"
-                  title="Jenna Toupin, FNP"
-                  fill
-                  style={{ objectFit: "cover", objectPosition: "top" }}
-                  sizes="(min-width: 1024px) 400px, 280px"
-                />
-              </div>
-              <div className="about-acc" aria-hidden="true" />
+            <aside className="about-vis r" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <ProviderCard />
             </aside>
           </div>
         </div>
@@ -330,12 +536,11 @@ export default function Home() {
       {/* ═══ SERVICES ═══ */}
       <section className="sec what" id="what" aria-label="Functional Medicine Services">
         <div className="wrap">
-          <header className="what-head r">
-            <div className="lbl"><span className="lbl-d" aria-hidden="true" /> Services</div>
-            <h2 className="h2">
+          <header className="what-head r" style={{ textAlign: 'center' }}>
+            <h2 className="h2" style={{ fontSize: 'clamp(48px, 9vw, 64px)', letterSpacing: '-0.035em', lineHeight: 1.08 }}>
               Everything you need,<br /><em>one practitioner</em>
             </h2>
-            <p className="sp">
+            <p className="sp" style={{ margin: '0 auto' }}>
               No referral loops. No fragmented care. I handle the full picture — from ordering labs
               to building your protocol.
             </p>
@@ -390,12 +595,11 @@ export default function Home() {
       {/* ═══ APPROACH ═══ */}
       <section className="sec appr" id="approach" aria-label="Our Functional Health Approach">
         <div className="wrap">
-          <header className="appr-head r">
-            <div className="lbl"><span className="lbl-d" aria-hidden="true" /> Approach</div>
-            <h2 className="h2">
+          <header className="appr-head r" style={{ textAlign: 'center' }}>
+            <h2 className="h2" style={{ fontSize: 'clamp(48px, 9vw, 64px)', letterSpacing: '-0.035em', lineHeight: 1.08 }}>
               Medicine that asks <em>why</em> —<br />not just what.
             </h2>
-            <p className="sp">
+            <p className="sp" style={{ margin: '0 auto' }}>
               Functional health traces symptoms to their roots — examining your biology, environment,
               and history as one connected system.
             </p>
@@ -424,10 +628,9 @@ export default function Home() {
       {/* ═══ PRICING ═══ */}
       <section className="sec price" id="pricing">
         <div className="wrap">
-          <div className="price-head r">
-            <div className="lbl"><span className="lbl-d" /> Investment</div>
-            <h2 className="h2">Simple, transparent <em>pricing</em></h2>
-            <p className="sp">
+          <div className="price-head r" style={{ textAlign: 'center' }}>
+            <h2 className="h2" style={{ fontSize: 'clamp(48px, 9vw, 64px)', letterSpacing: '-0.035em', lineHeight: 1.08 }}>Simple, transparent <em>pricing</em></h2>
+            <p className="sp" style={{ margin: '0 auto' }}>
               All programs include concierge membership — because care shouldn&apos;t stop when the session ends.
             </p>
           </div>
@@ -464,19 +667,51 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ TESTIMONIAL ═══ */}
-      <section className="testi">
-        <div className="testi-in r">
-          <div className="testi-stars">
-            <Star /><Star /><Star /><Star /><Star />
+      {/* ═══ REVIEWS ═══ */}
+      <section className="rev" data-header-theme="dark">
+        <h2 className="rev-title r">What patients <em>say</em></h2>
+
+        {/* Row 1 — scrolls left */}
+        <div className="rev-track-wrap">
+          <div className="rev-track rev-left">
+            {[...Array(2)].map((_, dup) => (
+              <div key={dup} className="rev-track-inner" aria-hidden={dup > 0 ? true : undefined}>
+                {[
+                  { q: "For three years, every doctor told me my labs were fine. Jenna asked questions no one had ever thought to ask. Three months later — real answers, and my energy back.", who: "Sarah M.", since: "2023" },
+                  { q: "I'd given up on finding someone who'd actually listen. Jenna spent 90 minutes with me on the first call. Nobody does that.", who: "Rachel T.", since: "2024" },
+                  { q: "The level of detail in the lab work alone was worth it. She found things three other doctors missed.", who: "Mark D.", since: "2023" },
+                  { q: "She doesn't just treat symptoms — she explains the why behind everything. I finally understand my own body.", who: "Danielle R.", since: "2024" },
+                ].map((r, i) => (
+                  <div key={i} className="rev-card">
+                    <div className="rev-stars">★★★★★</div>
+                    <p className="rev-q">&ldquo;{r.q}&rdquo;</p>
+                    <div className="rev-who"><strong>{r.who}</strong> · Patient since {r.since}</div>
+                  </div>
+                ))}
+              </div>
+            ))}
           </div>
-          <blockquote className="testi-q">
-            &ldquo;For three years, every doctor told me my labs were fine. In our first session,
-            Jenna asked questions no one had ever thought to ask. Three months later — real answers,
-            and my energy back.&rdquo;
-          </blockquote>
-          <div className="testi-who">
-            <strong>Sarah M.</strong> · Client since 2023
+        </div>
+
+        {/* Row 2 — scrolls right */}
+        <div className="rev-track-wrap">
+          <div className="rev-track rev-right">
+            {[...Array(2)].map((_, dup) => (
+              <div key={dup} className="rev-track-inner" aria-hidden={dup > 0 ? true : undefined}>
+                {[
+                  { q: "My gut issues were 'all in my head' according to my last doctor. Jenna ran the right panels and found the root cause in weeks.", who: "James W.", since: "2023" },
+                  { q: "The concierge model is incredible. Having direct access to your practitioner between visits changes everything.", who: "Priya S.", since: "2024" },
+                  { q: "Worth every penny. I've spent more on specialists who did less in a year than Jenna did in one visit.", who: "Chris L.", since: "2023" },
+                  { q: "Jenna changed my relationship with my health. I went from anxious and confused to empowered and informed.", who: "Nicole B.", since: "2024" },
+                ].map((r, i) => (
+                  <div key={i} className="rev-card">
+                    <div className="rev-stars">★★★★★</div>
+                    <p className="rev-q">&ldquo;{r.q}&rdquo;</p>
+                    <div className="rev-who"><strong>{r.who}</strong> · Patient since {r.since}</div>
+                  </div>
+                ))}
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -484,9 +719,8 @@ export default function Home() {
       {/* ═══ PROCESS ═══ */}
       <section className="sec how" id="how">
         <div className="wrap">
-          <div className="how-head r">
-            <div className="lbl"><span className="lbl-d" /> Process</div>
-            <h2 className="h2">How it <em>works</em></h2>
+          <div className="how-head r" style={{ textAlign: 'center' }}>
+            <h2 className="h2" style={{ fontSize: 'clamp(48px, 9vw, 64px)', letterSpacing: '-0.035em', lineHeight: 1.08 }}>How it <em>works</em></h2>
           </div>
           <div className="how-steps">
             <div className="how-step r">
@@ -515,9 +749,6 @@ export default function Home() {
       <section className="cta" id="book">
         <div className="cta-shape" />
         <div className="cta-in r">
-          <div className="lbl" style={{ justifyContent: "center" }}>
-            <span className="lbl-d" /> Start Here
-          </div>
           <h2 className="cta-h">
             Ready to find out<br />what&apos;s <em>actually going on?</em>
           </h2>
