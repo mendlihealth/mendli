@@ -677,15 +677,21 @@ export default function Home() {
             {[...Array(2)].map((_, dup) => (
               <div key={dup} className="rev-track-inner" aria-hidden={dup > 0 ? true : undefined}>
                 {[
-                  { q: "For three years, every doctor told me my labs were fine. Jenna asked questions no one had ever thought to ask. Three months later — real answers, and my energy back.", who: "Sarah M.", since: "2023" },
-                  { q: "I'd given up on finding someone who'd actually listen. Jenna spent 90 minutes with me on the first call. Nobody does that.", who: "Rachel T.", since: "2024" },
-                  { q: "The level of detail in the lab work alone was worth it. She found things three other doctors missed.", who: "Mark D.", since: "2023" },
-                  { q: "She doesn't just treat symptoms — she explains the why behind everything. I finally understand my own body.", who: "Danielle R.", since: "2024" },
+                  { q: "For three years, every doctor told me my labs were fine. Jenna asked questions no one had ever thought to ask. Three months later — real answers, and my energy back.", name: "Sarah M.", ctx: "Chronic fatigue · Patient since 2023", init: "S" },
+                  { q: "I'd given up on finding someone who'd actually listen. Jenna spent 90 minutes with me on the first call. Nobody does that.", name: "Rachel T.", ctx: "Hormonal imbalance · Patient since 2024", init: "R" },
+                  { q: "The level of detail in the lab work alone was worth it. She found things three other doctors missed.", name: "Mark D.", ctx: "Gut health · Patient since 2023", init: "M" },
+                  { q: "She doesn't just treat symptoms — she explains the why behind everything. I finally understand my own body.", name: "Danielle R.", ctx: "Autoimmune · Patient since 2024", init: "D" },
                 ].map((r, i) => (
                   <div key={i} className="rev-card">
-                    <div className="rev-stars">★★★★★</div>
-                    <p className="rev-q">&ldquo;{r.q}&rdquo;</p>
-                    <div className="rev-who"><strong>{r.who}</strong> · Patient since {r.since}</div>
+                    <div className="rev-mark">&ldquo;</div>
+                    <p className="rev-q">{r.q}</p>
+                    <div className="rev-footer">
+                      <div className="rev-avatar">{r.init}</div>
+                      <div>
+                        <div className="rev-name">{r.name}</div>
+                        <div className="rev-ctx">{r.ctx}</div>
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -699,15 +705,21 @@ export default function Home() {
             {[...Array(2)].map((_, dup) => (
               <div key={dup} className="rev-track-inner" aria-hidden={dup > 0 ? true : undefined}>
                 {[
-                  { q: "My gut issues were 'all in my head' according to my last doctor. Jenna ran the right panels and found the root cause in weeks.", who: "James W.", since: "2023" },
-                  { q: "The concierge model is incredible. Having direct access to your practitioner between visits changes everything.", who: "Priya S.", since: "2024" },
-                  { q: "Worth every penny. I've spent more on specialists who did less in a year than Jenna did in one visit.", who: "Chris L.", since: "2023" },
-                  { q: "Jenna changed my relationship with my health. I went from anxious and confused to empowered and informed.", who: "Nicole B.", since: "2024" },
+                  { q: "My gut issues were 'all in my head' according to my last doctor. Jenna ran the right panels and found the root cause in weeks.", name: "James W.", ctx: "Digestive issues · Patient since 2023", init: "J" },
+                  { q: "The concierge model is incredible. Having direct access to your practitioner between visits changes everything about how I manage my health.", name: "Priya S.", ctx: "Preventive care · Patient since 2024", init: "P" },
+                  { q: "Worth every penny. I've spent more on specialists who did less in a year than Jenna did in one visit.", name: "Chris L.", ctx: "Brain fog · Patient since 2023", init: "C" },
+                  { q: "Jenna changed my relationship with my health. I went from anxious and confused to empowered and informed.", name: "Nicole B.", ctx: "Thyroid · Patient since 2024", init: "N" },
                 ].map((r, i) => (
                   <div key={i} className="rev-card">
-                    <div className="rev-stars">★★★★★</div>
-                    <p className="rev-q">&ldquo;{r.q}&rdquo;</p>
-                    <div className="rev-who"><strong>{r.who}</strong> · Patient since {r.since}</div>
+                    <div className="rev-mark">&ldquo;</div>
+                    <p className="rev-q">{r.q}</p>
+                    <div className="rev-footer">
+                      <div className="rev-avatar">{r.init}</div>
+                      <div>
+                        <div className="rev-name">{r.name}</div>
+                        <div className="rev-ctx">{r.ctx}</div>
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -721,22 +733,48 @@ export default function Home() {
         <div className="wrap">
           <div className="how-head r" style={{ textAlign: 'center' }}>
             <h2 className="h2" style={{ fontSize: 'clamp(48px, 9vw, 64px)', letterSpacing: '-0.035em', lineHeight: 1.08 }}>How it <em>works</em></h2>
+            <p className="sp" style={{ margin: '0 auto' }}>Three steps from confusion to clarity.</p>
           </div>
           <div className="how-steps">
             <div className="how-step r">
-              <div className="how-num">01</div>
+              <div className="how-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />
+                </svg>
+              </div>
+              <div className="how-pill">Step 1</div>
               <h3>Book Your Visit</h3>
-              <p>Schedule your 90-minute initial assessment. You&apos;ll receive intake forms and a health timeline questionnaire before we meet.</p>
+              <p>Schedule your 90-minute initial assessment. You&apos;ll receive intake forms and a detailed health timeline questionnaire before we meet.</p>
             </div>
+
+            <div className="how-connector" aria-hidden="true">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M8 16h16M20 11l5 5-5 5" stroke="var(--ink5)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            </div>
+
             <div className="how-step r">
-              <div className="how-num">02</div>
+              <div className="how-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10" /><path d="M12 8v8M8 12h8" />
+                </svg>
+              </div>
+              <div className="how-pill">Step 2</div>
               <h3>Deep Assessment</h3>
-              <p>We meet virtually for a thorough review of your history, symptoms, and goals — then I order the right functional labs.</p>
+              <p>We meet virtually for a thorough review of your full history, symptoms, and goals — then I order the functional labs that actually matter.</p>
             </div>
+
+            <div className="how-connector" aria-hidden="true">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M8 16h16M20 11l5 5-5 5" stroke="var(--ink5)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            </div>
+
             <div className="how-step r">
-              <div className="how-num">03</div>
-              <h3>Your Roadmap + Ongoing Care</h3>
-              <p>Lab results become a personalized plan: nutrition, supplements, lifestyle changes, and regular follow-ups to track and adjust.</p>
+              <div className="how-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M22 11.08V12a10 10 0 11-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" />
+                </svg>
+              </div>
+              <div className="how-pill">Step 3</div>
+              <h3>Your Roadmap</h3>
+              <p>Lab results become a personalized protocol: nutrition, supplements, lifestyle shifts, and regular follow-ups to track real progress.</p>
             </div>
           </div>
         </div>
