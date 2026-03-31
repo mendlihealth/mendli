@@ -807,7 +807,7 @@ export default function Home() {
             <p>
               Mendli Health is a virtual functional medicine practice founded by Jenna Toupin,
               a Board-Certified Family Nurse Practitioner (NPI: 1902659063) with over 8 years of
-              clinical experience. Based in Indianapolis, Indiana, Mendli serves patients
+              clinical experience. Mendli serves patients
               nationwide through secure telehealth consultations. Unlike conventional 12-minute
               doctor visits, Mendli&apos;s initial assessments are 90 minutes long, allowing for
               thorough health timeline review, advanced diagnostic lab orders, and personalized
@@ -862,8 +862,7 @@ export default function Home() {
               Jenna is also a verified provider on{" "}
               <a href="https://www.welli.com/care/provider/1902659063" rel="noopener">Welli</a>,
               the healthcare platform connecting patients with providers through philosophy-of-care matching.
-              A physical location in Indianapolis, Indiana is in development for patients who prefer
-              in-person care.
+
             </p>
           </div>
         </noscript>
@@ -904,7 +903,7 @@ export default function Home() {
             </li>
           </ul>
           <address className="ft-c" style={{ fontStyle: "normal" }}>
-            &copy; {new Date().getFullYear()} Mendli Health · Indianapolis, IN ·
+            &copy; {new Date().getFullYear()} Mendli Health ·
             Virtual Nationwide
           </address>
           <a

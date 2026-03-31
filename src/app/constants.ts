@@ -10,11 +10,11 @@ export const FAQS = [
   /* ── Practice / Logistics ── */
   {
     q: "Do you have a physical location?",
-    a: "All Mendli visits are currently virtual — available to patients nationwide. That said, a physical location in Indianapolis is in development for patients who prefer in-person care. If you'd like to be notified when the office opens, just let me know when you book.",
+    a: "All Mendli visits are currently virtual — available to patients nationwide. This allows me to serve patients wherever they are, without geographic limitations. If you'd like to learn more about how virtual visits work, just let me know when you book.",
   },
   {
     q: "Do you offer primary care?",
-    a: "Yes — I'm a Board-Certified Family Nurse Practitioner, and primary care is what I trained in. I grew up around it, too; my dad was a Family Physician. Once the Indianapolis office is established, I plan to offer a dedicated primary care package alongside functional health services.",
+    a: "Yes — I'm a Board-Certified Family Nurse Practitioner, and primary care is what I trained in. I grew up around it, too; my dad was a Family Physician. I plan to offer a dedicated primary care package alongside functional health services in the future.",
   },
   {
     q: "Do you take insurance?",

@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     "functional health practitioner",
     "Jenna Toupin",
     "Mendli Health",
-    "Indianapolis",
+    "virtual healthcare",
     "concierge medicine",
     "integrative health",
   ],
@@ -149,14 +149,7 @@ const jsonLd = {
       ],
       address: {
         "@type": "PostalAddress",
-        addressLocality: "Indianapolis",
-        addressRegion: "IN",
         addressCountry: "US",
-      },
-      geo: {
-        "@type": "GeoCoordinates",
-        latitude: 39.7684,
-        longitude: -86.1581,
       },
       areaServed: {
         "@type": "Country",
@@ -525,7 +518,7 @@ const jsonLd = {
           name: "Do you have a physical location?",
           acceptedAnswer: {
             "@type": "Answer",
-            text: "All Mendli visits are currently virtual — available to patients nationwide. A physical location in Indianapolis is in development for patients who prefer in-person care.",
+            text: "All Mendli visits are currently virtual — available to patients nationwide. This allows specialized functional medicine care to reach patients wherever they are, without geographic limitations.",
           },
         },
         {
@@ -573,7 +566,7 @@ const jsonLd = {
           name: "Do you offer primary care?",
           acceptedAnswer: {
             "@type": "Answer",
-            text: "Yes — Jenna is a Board-Certified Family Nurse Practitioner, and primary care is what she trained in. A dedicated primary care package is planned once the Indianapolis office is established.",
+            text: "Yes — Jenna is a Board-Certified Family Nurse Practitioner, and primary care is what she trained in. A dedicated primary care package is planned alongside functional health services in the future.",
           },
         },
       ],
