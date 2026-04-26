@@ -176,25 +176,31 @@ export default function Home() {
                 </h2>
                 <div className="about-story" data-geo="practitioner-bio">
                   <p>
-                    I didn&apos;t come to functional medicine through a textbook
-                    — I came to it through my own body. After years of fatigue,
-                    brain fog, and being told my labs were &ldquo;normal,&rdquo;
-                    I was finally diagnosed with Hashimoto&apos;s thyroiditis.
-                    What struck me wasn&apos;t the diagnosis — it was how long it
-                    took to get there.
+                    I didn&apos;t come to functional medicine through a
+                    textbook—I came to it through my own story.
                   </p>
                   <p>
-                    As a Nurse Practitioner, I&apos;d spent years in clinical
-                    practice. I knew how to read labs, manage medications, and
-                    follow protocols. But my own experience revealed the gap:
-                    conventional medicine often treats numbers on a page, not the
-                    person sitting in front of you.
+                    Trained in traditional medicine and raised in a family of
+                    physicians, I trusted the conventional model completely. But
+                    years ago, I began experiencing severe brain fog, neuropathy,
+                    rashes, and other unexplained symptoms. I saw specialist
+                    after specialist, yet instead of answers, I was given
+                    treatments that never addressed the root cause.
                   </p>
                   <p>
-                    That gap became my mission. I started Mendli to give patients
-                    the care I wished I&apos;d had — where your provider actually
-                    listens, runs the right tests, takes the time, and builds a
-                    plan that&apos;s <em>truly yours</em>.
+                    Eventually, I uncovered what had been missed all along:
+                    significant mold-related illness. That moment changed
+                    everything.
+                  </p>
+                  <p>
+                    It led me to functional medicine—a different way of
+                    practicing that looks deeper, connects the dots, and focuses
+                    on why symptoms are happening in the first place.
+                  </p>
+                  <p>
+                    That journey is why I created Mendli—to offer the kind of
+                    care I wish I had received: thoughtful, thorough, and{" "}
+                    <em>truly personalized to you</em>.
                   </p>
                 </div>
                 <a
